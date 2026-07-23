@@ -1,0 +1,112 @@
+fashion-ecommerce-analytics/
+│
+├── README.md
+├── LICENSE
+├── .gitignore
+├── .env.example
+├── requirements.txt
+├── docker-compose.yml
+│
+├── data/
+│   ├── raw/
+│   │   └── .gitkeep
+│   └── sample/
+│       └── .gitkeep
+│
+├── notebooks/
+│   ├── 01_data_inventory.ipynb
+│   ├── 02_data_quality.ipynb
+│   └── 03_exploratory_analysis.ipynb
+│
+├── dbt/
+│   ├── dbt_project.yml
+│   ├── packages.yml
+│   │
+│   ├── models/
+│   │   ├── staging/
+│   │   │   └── ecommerce/
+│   │   │       ├── _ecommerce__sources.yml
+│   │   │       ├── _ecommerce__models.yml
+│   │   │       ├── stg_ecommerce__customers.sql
+│   │   │       ├── stg_ecommerce__products.sql
+│   │   │       ├── stg_ecommerce__orders.sql
+│   │   │       ├── stg_ecommerce__order_items.sql
+│   │   │       ├── stg_ecommerce__inventory.sql
+│   │   │       ├── stg_ecommerce__promotions.sql
+│   │   │       ├── stg_ecommerce__returns.sql
+│   │   │       └── stg_ecommerce__reviews.sql
+│   │   │
+│   │   ├── intermediate/
+│   │   │   ├── _intermediate__models.yml
+│   │   │   ├── int_order_items__enriched.sql
+│   │   │   ├── int_orders__aggregated.sql
+│   │   │   ├── int_customers__order_history.sql
+│   │   │   ├── int_products__sales_performance.sql
+│   │   │   ├── int_inventory__daily_status.sql
+│   │   │   └── int_returns__enriched.sql
+│   │   │
+│   │   └── marts/
+│   │       ├── core/
+│   │       │   ├── _core__models.yml
+│   │       │   ├── dim_dates.sql
+│   │       │   ├── dim_customers.sql
+│   │       │   ├── dim_products.sql
+│   │       │   ├── dim_locations.sql
+│   │       │   └── dim_promotions.sql
+│   │       │
+│   │       ├── sales/
+│   │       │   ├── _sales__models.yml
+│   │       │   └── fct_sales.sql
+│   │       │
+│   │       ├── marketing/
+│   │       │   ├── _marketing__models.yml
+│   │       │   └── fct_promotion_performance.sql
+│   │       │
+│   │       ├── operations/
+│   │       │   ├── _operations__models.yml
+│   │       │   ├── fct_inventory_snapshots.sql
+│   │       │   └── fct_shipments.sql
+│   │       │
+│   │       └── customer_experience/
+│   │           ├── _customer_experience__models.yml
+│   │           ├── fct_returns.sql
+│   │           └── fct_reviews.sql
+│   │
+│   ├── analyses/
+│   ├── macros/
+│   ├── seeds/
+│   ├── snapshots/
+│   └── tests/
+│
+├── src/
+│   ├── ingestion/
+│   │   └── load_raw_data.py
+│   ├── validation/
+│   │   └── validate_source_data.py
+│   └── utils/
+│       ├── config.py
+│       └── database.py
+│
+├── dashboards/
+│   ├── power_bi/
+│   └── screenshots/
+│
+├── docs/
+│   ├── 01_business_understanding.md
+│   ├── 02_data_understanding.md
+│   ├── 03_requirement_gathering.md
+│   ├── 04_kpi_definition.md
+│   ├── 05_data_warehouse_design.md
+│   ├── data_dictionary.md
+│   └── assumptions_and_limitations.md
+│
+├── diagrams/
+│   ├── source_data_model.png
+│   ├── data_pipeline.png
+│   ├── star_schema.png
+│   └── dashboard_wireframe.png
+│
+└── scripts/
+    ├── load_data.sh
+    ├── run_dbt.sh
+    └── run_tests.sh
