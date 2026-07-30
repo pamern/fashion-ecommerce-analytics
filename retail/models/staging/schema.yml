@@ -1,0 +1,504 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: Cleaned customer records from the raw source.
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+      - name: zip
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_geography')
+                field: zip
+      - name: signup_date
+        data_tests:
+          - not_null
+      - name: gender
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['female', 'male', 'non-binary']
+      - name: acquisition_channel
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - direct
+                  - email_campaign
+                  - organic_search
+                  - paid_search
+                  - referral
+                  - social_media
+
+  - name: stg_geography
+    description: Standardized postal-code geography.
+    columns:
+      - name: zip
+        data_tests:
+          - not_null
+          - unique
+      - name: city
+        data_tests:
+          - not_null
+      - name: region
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['central', 'east', 'west']
+      - name: district
+        data_tests:
+          - not_null
+
+  - name: stg_products
+    description: Standardized product catalog.
+    columns:
+      - name: product_id
+        data_tests:
+          - not_null
+          - unique
+      - name: product_name
+        data_tests:
+          - not_null
+      - name: category
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['casual', 'genz', 'outdoor', 'streetwear']
+      - name: segment
+        data_tests:
+          - not_null
+      - name: size
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['S', 'M', 'L', 'XL']
+      - name: color
+        data_tests:
+          - not_null
+      - name: price
+        data_tests:
+          - not_null
+          - non_negative
+      - name: cogs
+        data_tests:
+          - not_null
+          - non_negative
+
+  - name: stg_orders
+    description: Standardized order headers.
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - unique
+      - name: order_date
+        data_tests:
+          - not_null
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: zip
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_geography')
+                field: zip
+      - name: order_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - cancelled
+                  - created
+                  - delivered
+                  - paid
+                  - returned
+                  - shipped
+      - name: payment_method
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - apple_pay
+                  - bank_transfer
+                  - cod
+                  - credit_card
+                  - paypal
+      - name: device_type
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['desktop', 'mobile', 'tablet']
+      - name: order_source
+        data_tests:
+          - not_null
+
+  - name: stg_order_items
+    description: Standardized order line items.
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+      - name: quantity
+        data_tests:
+          - not_null
+          - non_negative
+      - name: unit_price
+        data_tests:
+          - not_null
+          - non_negative
+      - name: discount_amount
+        data_tests:
+          - not_null
+          - non_negative
+      - name: promo_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_promotions')
+                field: promo_id
+      - name: secondary_promo_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_promotions')
+                field: promo_id
+
+  - name: stg_payments
+    description: Standardized payment records.
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+      - name: payment_method
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - apple_pay
+                  - bank_transfer
+                  - cod
+                  - credit_card
+                  - paypal
+      - name: payment_value
+        data_tests:
+          - not_null
+          - non_negative
+      - name: installments
+        data_tests:
+          - not_null
+          - non_negative
+
+  - name: stg_shipments
+    description: Standardized shipment records.
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+      - name: ship_date
+        data_tests:
+          - not_null
+      - name: delivery_date
+        data_tests:
+          - not_null
+      - name: shipping_fee
+        data_tests:
+          - not_null
+          - non_negative
+
+  - name: stg_returns
+    description: Standardized returned order items.
+    columns:
+      - name: return_id
+        data_tests:
+          - not_null
+          - unique
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+      - name: return_date
+        data_tests:
+          - not_null
+      - name: return_reason
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - changed_mind
+                  - defective
+                  - late_delivery
+                  - not_as_described
+                  - wrong_size
+      - name: return_quantity
+        data_tests:
+          - not_null
+          - non_negative
+      - name: refund_amount
+        data_tests:
+          - not_null
+          - non_negative
+
+  - name: stg_reviews
+    description: Standardized product review records.
+    columns:
+      - name: review_id
+        data_tests:
+          - not_null
+          - unique
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: review_date
+        data_tests:
+          - not_null
+      - name: rating
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+      - name: review_title
+        data_tests:
+          - not_null
+
+  - name: stg_inventory
+    description: Standardized product inventory snapshots.
+    data_tests:
+      - unique:
+          arguments:
+            column_name: "(snapshot_date, product_id)"
+    columns:
+      - name: snapshot_date
+        data_tests:
+          - not_null
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+      - name: stock_on_hand
+        data_tests:
+          - not_null
+          - non_negative
+      - name: units_received
+        data_tests:
+          - not_null
+          - non_negative
+      - name: units_sold
+        data_tests:
+          - not_null
+          - non_negative
+      - name: stockout_days
+        data_tests:
+          - not_null
+          - non_negative
+      - name: days_of_supply
+        data_tests:
+          - not_null
+          - non_negative
+      - name: fill_rate
+        data_tests:
+          - not_null
+          - accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+      - name: is_stockout
+        data_tests:
+          - not_null
+      - name: is_overstock
+        data_tests:
+          - not_null
+      - name: requires_reorder
+        data_tests:
+          - not_null
+      - name: sell_through_rate
+        data_tests:
+          - not_null
+          - accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+      - name: product_name
+        data_tests:
+          - not_null
+      - name: category
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['casual', 'genz', 'outdoor', 'streetwear']
+      - name: segment
+        data_tests:
+          - not_null
+      - name: year
+        data_tests:
+          - not_null
+      - name: month
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                quote: false
+
+  - name: stg_web_traffic
+    description: Standardized daily web traffic by acquisition source.
+    columns:
+      - name: traffic_date
+        data_tests:
+          - not_null
+          - unique
+      - name: sessions
+        data_tests:
+          - not_null
+          - non_negative
+      - name: unique_visitors
+        data_tests:
+          - not_null
+          - non_negative
+      - name: page_views
+        data_tests:
+          - not_null
+          - non_negative
+      - name: bounce_rate
+        data_tests:
+          - not_null
+          - accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+      - name: avg_session_duration_seconds
+        data_tests:
+          - not_null
+          - non_negative
+      - name: traffic_source
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - direct
+                  - email_campaign
+                  - organic_search
+                  - paid_search
+                  - referral
+                  - social_media
+
+  - name: stg_promotions
+    description: Standardized promotion definitions.
+    columns:
+      - name: promo_id
+        data_tests:
+          - not_null
+          - unique
+      - name: promo_name
+        data_tests:
+          - not_null
+      - name: promo_type
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['fixed', 'percentage']
+      - name: discount_value
+        data_tests:
+          - not_null
+          - non_negative
+      - name: start_date
+        data_tests:
+          - not_null
+      - name: end_date
+        data_tests:
+          - not_null
+      - name: promo_channel
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - all_channels
+                  - email
+                  - in_store
+                  - online
+                  - social_media
+      - name: is_stackable
+        data_tests:
+          - not_null
+      - name: min_order_value
+        data_tests:
+          - not_null
+          - non_negative
