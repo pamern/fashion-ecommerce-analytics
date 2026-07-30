@@ -1,0 +1,226 @@
+version: 2
+
+models:
+  - name: int_order_items_enriched
+    description: >
+      Sales lines aggregated to one row per order and product, enriched with
+      order context and calculated financial measures.
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+      - name: order_date
+        data_tests:
+          - not_null
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: zip
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_geography')
+                field: zip
+      - name: order_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - cancelled
+                  - created
+                  - delivered
+                  - paid
+                  - returned
+                  - shipped
+      - name: is_completed_order
+        data_tests:
+          - not_null
+      - name: is_returned_order
+        data_tests:
+          - not_null
+      - name: is_fulfilled_order
+        data_tests:
+          - not_null
+      - name: quantity
+        data_tests:
+          - not_null
+          - non_negative
+      - name: average_unit_price
+        data_tests:
+          - not_null
+          - non_negative
+      - name: discount_amount
+        data_tests:
+          - not_null
+          - non_negative
+      - name: gross_sales
+        data_tests:
+          - not_null
+          - non_negative
+      - name: net_sales
+        data_tests:
+          - not_null
+          - non_negative
+      - name: cogs_amount
+        data_tests:
+          - not_null
+          - non_negative
+      - name: gross_profit
+        data_tests:
+          - not_null
+
+  - name: int_orders_enriched
+    description: >
+      Order-level records enriched with payment and shipment attributes.
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+      - name: order_date
+        data_tests:
+          - not_null
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: zip
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_geography')
+                field: zip
+      - name: order_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - cancelled
+                  - created
+                  - delivered
+                  - paid
+                  - returned
+                  - shipped
+      - name: payment_method
+        data_tests:
+          - not_null
+      - name: payment_value
+        data_tests:
+          - not_null
+          - non_negative
+      - name: shipping_fee
+        data_tests:
+          - non_negative
+      - name: installments
+        data_tests:
+          - not_null
+          - non_negative
+      - name: delivery_days
+        data_tests:
+          - accepted_range:
+              arguments:
+                min_value: 0
+      - name: is_completed_order
+        data_tests:
+          - not_null
+      - name: is_returned_order
+        data_tests:
+          - not_null
+      - name: is_fulfilled_order
+        data_tests:
+          - not_null
+
+  - name: int_customer_metrics
+    description: >
+      Customer-level purchase metrics calculated from delivered orders using
+      the maximum order date in the dataset as a stable reference date.
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: reference_date
+        data_tests:
+          - not_null
+      - name: total_order_count
+        data_tests:
+          - not_null
+          - non_negative
+      - name: completed_order_count
+        data_tests:
+          - not_null
+          - non_negative
+      - name: returned_order_count
+        data_tests:
+          - not_null
+          - non_negative
+      - name: cancelled_order_count
+        data_tests:
+          - not_null
+          - non_negative
+      - name: days_since_latest_order
+        data_tests:
+          - non_negative
+      - name: customer_tenure_days
+        data_tests:
+          - not_null
+          - non_negative
+      - name: cancellation_rate
+        data_tests:
+          - not_null
+          - accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+      - name: lifetime_order_quantity
+        data_tests:
+          - not_null
+          - non_negative
+      - name: lifetime_gross_sales
+        data_tests:
+          - not_null
+          - non_negative
+      - name: lifetime_net_sales
+        data_tests:
+          - not_null
+          - non_negative
+      - name: lifetime_gross_profit
+        data_tests:
+          - not_null
+      - name: average_order_value
+        data_tests:
+          - not_null
+          - non_negative
+      - name: is_repeat_customer
+        data_tests:
+          - not_null
