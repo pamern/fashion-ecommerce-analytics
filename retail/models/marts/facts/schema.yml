@@ -1,0 +1,293 @@
+version: 2
+
+models:
+  - name: fact_sales
+    description: >
+      Delivered sales at one row per order and product.
+    columns:
+      - name: sales_key
+        data_tests:
+          - not_null
+          - unique
+      - name: order_id
+        data_tests:
+          - not_null
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: product_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_key
+      - name: customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: geography_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_geography')
+                field: geography_key
+      - name: quantity
+        data_tests:
+          - not_null
+          - non_negative
+      - name: unit_price
+        data_tests:
+          - not_null
+          - non_negative
+      - name: discount_amount
+        data_tests:
+          - not_null
+          - non_negative
+      - name: gross_sales
+        data_tests:
+          - not_null
+          - non_negative
+      - name: net_sales
+        data_tests:
+          - not_null
+          - non_negative
+      - name: cogs_amount
+        data_tests:
+          - not_null
+          - non_negative
+      - name: gross_profit
+        data_tests:
+          - not_null
+
+  - name: fact_order
+    description: One row per order with payment and fulfillment measures.
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - unique
+      - name: order_date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: ship_date_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: delivery_date_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: geography_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_geography')
+                field: geography_key
+      - name: order_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - cancelled
+                  - created
+                  - delivered
+                  - paid
+                  - returned
+                  - shipped
+      - name: payment_method
+        data_tests:
+          - not_null
+      - name: payment_value
+        data_tests:
+          - not_null
+          - non_negative
+      - name: shipping_fee
+        data_tests:
+          - non_negative
+      - name: installments
+        data_tests:
+          - not_null
+          - non_negative
+      - name: delivery_days
+        data_tests:
+          - accepted_range:
+              arguments:
+                min_value: 0
+
+  - name: fact_return
+    description: One row per returned product event.
+    columns:
+      - name: return_id
+        data_tests:
+          - not_null
+          - unique
+      - name: order_id
+        data_tests:
+          - not_null
+      - name: return_date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: product_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_key
+      - name: customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: geography_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_geography')
+                field: geography_key
+      - name: return_quantity
+        data_tests:
+          - not_null
+          - non_negative
+      - name: refund_amount
+        data_tests:
+          - not_null
+          - non_negative
+      - name: return_reason
+        data_tests:
+          - not_null
+
+  - name: fact_inventory_snapshot
+    description: Month-end product inventory snapshots.
+    columns:
+      - name: snapshot_date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: product_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_key
+      - name: stock_on_hand
+        data_tests:
+          - not_null
+          - non_negative
+      - name: units_received
+        data_tests:
+          - not_null
+          - non_negative
+      - name: units_sold
+        data_tests:
+          - not_null
+          - non_negative
+      - name: stockout_days
+        data_tests:
+          - not_null
+          - non_negative
+      - name: days_of_supply
+        data_tests:
+          - not_null
+          - non_negative
+      - name: fill_rate
+        data_tests:
+          - not_null
+          - accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+      - name: sell_through_rate
+        data_tests:
+          - not_null
+          - accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+      - name: stockout_flag
+        data_tests:
+          - not_null
+      - name: overstock_flag
+        data_tests:
+          - not_null
+      - name: reorder_flag
+        data_tests:
+          - not_null
+
+  - name: fact_web_traffic
+    description: Daily web traffic by acquisition source.
+    columns:
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: traffic_source_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_traffic_source')
+                field: traffic_source_key
+      - name: sessions
+        data_tests:
+          - not_null
+          - non_negative
+      - name: unique_visitors
+        data_tests:
+          - not_null
+          - non_negative
+      - name: page_views
+        data_tests:
+          - not_null
+          - non_negative
+      - name: bounce_rate
+        data_tests:
+          - not_null
+          - accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+      - name: avg_session_duration_seconds
+        data_tests:
+          - not_null
+          - non_negative

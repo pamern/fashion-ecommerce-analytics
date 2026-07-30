@@ -1,0 +1,184 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: Calendar dimension spanning every date present in source data.
+    columns:
+      - name: date_key
+        data_tests:
+          - not_null
+          - unique
+      - name: full_date
+        data_tests:
+          - not_null
+          - unique
+      - name: day
+        data_tests:
+          - accepted_range:
+              arguments:
+                min_value: 1
+                max_value: 31
+      - name: month
+        data_tests:
+          - accepted_range:
+              arguments:
+                min_value: 1
+                max_value: 12
+      - name: quarter
+        data_tests:
+          - accepted_range:
+              arguments:
+                min_value: 1
+                max_value: 4
+      - name: year
+        data_tests:
+          - not_null
+      - name: day_of_week
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - Monday
+                  - Tuesday
+                  - Wednesday
+                  - Thursday
+                  - Friday
+                  - Saturday
+                  - Sunday
+      - name: is_weekend
+        data_tests:
+          - not_null
+
+  - name: dim_product
+    description: Current product attributes used to analyze sales and inventory.
+    columns:
+      - name: product_key
+        data_tests:
+          - not_null
+          - unique
+      - name: product_id
+        data_tests:
+          - not_null
+          - unique
+      - name: product_name
+        data_tests:
+          - not_null
+      - name: category
+        data_tests:
+          - not_null
+      - name: segment
+        data_tests:
+          - not_null
+      - name: size
+        data_tests:
+          - not_null
+      - name: color
+        data_tests:
+          - not_null
+      - name: list_price
+        data_tests:
+          - not_null
+          - non_negative
+      - name: cogs
+        data_tests:
+          - not_null
+          - non_negative
+
+  - name: dim_customer
+    description: Current customer demographic and acquisition attributes.
+    columns:
+      - name: customer_key
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+      - name: signup_date
+        data_tests:
+          - not_null
+      - name: gender
+        data_tests:
+          - not_null
+      - name: age_group
+        data_tests:
+          - not_null
+      - name: acquisition_channel
+        data_tests:
+          - not_null
+
+  - name: dim_geography
+    description: Postal-code geography dimension.
+    columns:
+      - name: geography_key
+        data_tests:
+          - not_null
+          - unique
+      - name: zip
+        data_tests:
+          - not_null
+          - unique
+      - name: city
+        data_tests:
+          - not_null
+      - name: district
+        data_tests:
+          - not_null
+      - name: region
+        data_tests:
+          - not_null
+
+  - name: dim_promotion
+    description: Promotion definitions keyed by a deterministic hash.
+    columns:
+      - name: promotion_key
+        data_tests:
+          - not_null
+          - unique
+      - name: promo_id
+        data_tests:
+          - not_null
+          - unique
+      - name: promo_name
+        data_tests:
+          - not_null
+      - name: promo_type
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['fixed', 'percentage']
+      - name: discount_value
+        data_tests:
+          - not_null
+          - non_negative
+      - name: start_date
+        data_tests:
+          - not_null
+      - name: end_date
+        data_tests:
+          - not_null
+      - name: promo_channel
+        data_tests:
+          - not_null
+      - name: is_stackable
+        data_tests:
+          - not_null
+      - name: min_order_value
+        data_tests:
+          - not_null
+          - non_negative
+
+  - name: dim_traffic_source
+    description: Distinct web acquisition channels.
+    columns:
+      - name: traffic_source_key
+        data_tests:
+          - not_null
+          - unique
+      - name: traffic_source
+        data_tests:
+          - not_null
+          - unique
