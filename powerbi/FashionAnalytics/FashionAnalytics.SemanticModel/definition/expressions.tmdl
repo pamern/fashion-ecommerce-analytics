@@ -1,0 +1,41 @@
+expression Parameter1 = #"Sample File" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: 20436a0f-82a9-4a4c-b1af-23b8dac3c59f
+	queryGroup: 'Transform File from marts\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Sample File' =
+		let
+		    Source = Folder.Files("D:\retail_dw\marts"),
+		    Navigation1 = Source{0}[Content]
+		in
+		    Navigation1
+	lineageTag: 938874b0-7c67-4595-924f-ee1dd2564cb9
+	queryGroup: 'Transform File from marts\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform Sample File' =
+		let
+		    Source = Parquet.Document(Parameter1, [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+		in
+		    Source
+	lineageTag: 911e7f52-f236-4fa7-9aa9-f313a71ab8b8
+	queryGroup: 'Transform File from marts'
+
+	annotation PBI_ResultType = Table
+
+expression 'Transform File' =
+		let
+		    Source = (Parameter1 as binary) => let
+		    Source = Parquet.Document(Parameter1, [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+		in
+		    Source
+		in
+		    Source
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File""}" ]
+	lineageTag: 481351a1-4d52-4f3f-9fa3-0a2466792bfb
+	queryGroup: 'Transform File from marts\Helper Queries'
+
+	annotation PBI_ResultType = Function
+

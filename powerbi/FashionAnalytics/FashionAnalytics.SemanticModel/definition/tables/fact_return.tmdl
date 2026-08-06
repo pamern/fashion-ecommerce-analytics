@@ -1,0 +1,120 @@
+table fact_return
+	lineageTag: e589ebb3-88f9-4ae8-a4f3-b5d71a03ceb7
+
+	column return_id
+		dataType: string
+		lineageTag: 8be0c5ce-42f6-4aa0-83eb-f77b87554eab
+		summarizeBy: none
+		sourceColumn: return_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d79acea7-dbfa-4631-8566-7e512bcd3bcb
+		summarizeBy: sum
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column return_date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c6677d33-e1ca-4553-8d13-514f6e743694
+		summarizeBy: sum
+		sourceColumn: return_date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 4851e8cd-cb50-47ad-a5b4-a4706979c034
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a4df8853-2241-4885-898e-4338440fc787
+		summarizeBy: none
+		sourceColumn: customer_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column geography_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: baf0ff4f-32f0-4665-ad40-8fe2a0c23eca
+		summarizeBy: none
+		sourceColumn: geography_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column return_quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 8e509a8b-bfa5-442b-9e9a-8af4d0eaa6f5
+		summarizeBy: sum
+		sourceColumn: return_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column refund_amount
+		dataType: double
+		lineageTag: 7dbe5022-ab01-4fb5-9c33-5d098260bbac
+		summarizeBy: sum
+		sourceColumn: refund_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column return_reason
+		dataType: string
+		lineageTag: 490bec52-bb73-4618-89f6-3a765c8bb435
+		summarizeBy: none
+		sourceColumn: return_reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column return_key
+		dataType: string
+		lineageTag: 49abc3ea-8b6a-4543-a7d9-52406e143da3
+		summarizeBy: none
+		sourceColumn: return_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_key
+		dataType: string
+		lineageTag: eac072f0-714f-4ddd-97b9-c3d9574d3840
+		summarizeBy: none
+		sourceColumn: order_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_return = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents("D:\retail_dw\marts\fact_return.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

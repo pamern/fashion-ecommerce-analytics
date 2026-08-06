@@ -1,0 +1,434 @@
+table mart_customer
+	lineageTag: b468dadf-9539-4b01-9703-40c0de875044
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 03e9c97c-972a-4c1a-9b39-bc601f0c3465
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column signup_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1e96dd78-fde3-4295-b9f3-6548e6d083ac
+		summarizeBy: none
+		sourceColumn: signup_date
+
+		variation Variation
+			isDefault
+			relationship: 2f98a4fb-d8e3-45c8-9b03-837b4cf9f88f
+			defaultHierarchy: LocalDateTable_e8ba3215-f356-4055-babf-6318c292da7a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column gender
+		dataType: string
+		lineageTag: 4dd16e10-9da4-4fa0-b795-a2bf90d10c61
+		summarizeBy: none
+		sourceColumn: gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group
+		dataType: string
+		lineageTag: d62a465a-edac-4fde-bfcd-85234f1eb817
+		summarizeBy: none
+		sourceColumn: age_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column acquisition_channel
+		dataType: string
+		lineageTag: 5f1ad02c-1bf4-49ca-af4a-0d4e01a9da48
+		summarizeBy: none
+		sourceColumn: acquisition_channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 8791be89-15e9-4653-a6c8-72a29c418ff9
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column district
+		dataType: string
+		lineageTag: bdab5fbd-8af2-4d88-9465-392926d98f06
+		summarizeBy: none
+		sourceColumn: district
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: cf847e04-6e4d-4578-bb9b-6ff4cf2bcb78
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_order_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 28d057b7-2643-44a2-b8cc-13de31d30e45
+		summarizeBy: none
+		sourceColumn: first_order_date
+
+		variation Variation
+			isDefault
+			relationship: 0e4b2ed5-9a00-4032-b774-b0e644453e00
+			defaultHierarchy: LocalDateTable_1e6ae2ee-c362-4a98-be41-3538d7174985.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column last_order_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: dee120a0-662d-48cd-b01c-0264c52916ee
+		summarizeBy: none
+		sourceColumn: last_order_date
+
+		variation Variation
+			isDefault
+			relationship: 64f5bf55-087f-4d4c-92b6-9a954a83990e
+			defaultHierarchy: LocalDateTable_db6728a9-b770-45cd-8ce5-495b8aae31bd.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column customer_lifetime_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b9d0506-b5e0-404f-9808-a20a4631b6cf
+		summarizeBy: sum
+		sourceColumn: customer_lifetime_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column days_since_last_purchase
+		dataType: double
+		lineageTag: d7dc817f-9dbc-4ec7-b8c1-073d88bbc924
+		summarizeBy: sum
+		sourceColumn: days_since_last_purchase
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column customer_status
+		dataType: string
+		lineageTag: e4ed4394-bdc5-439e-aa43-0788c129943e
+		summarizeBy: none
+		sourceColumn: customer_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_orders
+		dataType: int64
+		formatString: 0
+		lineageTag: a7b790fe-9151-457f-b424-9dfa5cc3c619
+		summarizeBy: sum
+		sourceColumn: total_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_order_lines
+		dataType: double
+		lineageTag: 73b92ead-bc34-4d08-8f9d-f2ad041f6a19
+		summarizeBy: sum
+		sourceColumn: total_order_lines
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_quantity
+		dataType: double
+		lineageTag: d23def33-6137-40d2-8ea0-7e722435c8b6
+		summarizeBy: sum
+		sourceColumn: total_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_revenue
+		dataType: double
+		lineageTag: 2d5ab8eb-9f9d-448c-a0dc-e0c538f40213
+		summarizeBy: sum
+		sourceColumn: total_revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_discount
+		dataType: double
+		lineageTag: 4461a9a3-efaa-433d-9a71-2a6307928740
+		summarizeBy: sum
+		sourceColumn: total_discount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_cogs
+		dataType: double
+		lineageTag: 09659e8a-7e8a-46d8-8cb8-1e65a78e1661
+		summarizeBy: sum
+		sourceColumn: total_cogs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_profit
+		dataType: double
+		lineageTag: 9f39ae60-86da-4f1f-9775-aa8ba153ae97
+		summarizeBy: sum
+		sourceColumn: total_profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column average_order_value
+		dataType: double
+		lineageTag: c2db6cff-21cb-4253-8916-145119ced510
+		summarizeBy: sum
+		sourceColumn: average_order_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column average_profit_per_order
+		dataType: double
+		lineageTag: 40f2975f-87cd-4cd9-9187-a7ec758f6ff1
+		summarizeBy: sum
+		sourceColumn: average_profit_per_order
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_repeat_customer
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4e936f2d-a00d-4816-88b4-2e79979ebddc
+		summarizeBy: none
+		sourceColumn: is_repeat_customer
+
+		annotation SummarizationSetBy = Automatic
+
+	column gross_margin_rate
+		dataType: double
+		lineageTag: 10c7271f-c0a9-40ec-8b47-d8da2974df01
+		summarizeBy: sum
+		sourceColumn: gross_margin_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column orders_per_30_days
+		dataType: double
+		lineageTag: 8c250e94-75aa-44ce-8541-d902d1823149
+		summarizeBy: sum
+		sourceColumn: orders_per_30_days
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_days_between_orders
+		dataType: double
+		lineageTag: 0b26e88b-76cc-4153-a101-8a06da6a4f6c
+		summarizeBy: sum
+		sourceColumn: avg_days_between_orders
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column favorite_category
+		dataType: string
+		lineageTag: 07db90de-b68b-4d4f-94a2-a14f7246bf7f
+		summarizeBy: none
+		sourceColumn: favorite_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column favorite_segment
+		dataType: string
+		lineageTag: 351e573a-5194-4f2e-b6a2-db3d9aa8717b
+		summarizeBy: none
+		sourceColumn: favorite_segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column favorite_payment_method
+		dataType: string
+		lineageTag: c1a2e7ae-29b8-408a-9896-d9a58e529463
+		summarizeBy: none
+		sourceColumn: favorite_payment_method
+
+		annotation SummarizationSetBy = Automatic
+
+	column favorite_device
+		dataType: string
+		lineageTag: 1e7f65af-407b-41ff-9eaf-fb45a69ffc4f
+		summarizeBy: none
+		sourceColumn: favorite_device
+
+		annotation SummarizationSetBy = Automatic
+
+	column favorite_order_source
+		dataType: string
+		lineageTag: 9d97be2f-91fa-48ee-a0e1-a8e6c895e708
+		summarizeBy: none
+		sourceColumn: favorite_order_source
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_return_orders
+		dataType: int64
+		formatString: 0
+		lineageTag: 61330474-b67e-45c2-953f-cfa3f6371906
+		summarizeBy: sum
+		sourceColumn: total_return_orders
+
+		annotation SummarizationSetBy = Automatic
+
+	column return_order_rate
+		dataType: double
+		lineageTag: 8cfceda7-771d-41fb-92f3-a2ed17ff4f79
+		summarizeBy: sum
+		sourceColumn: return_order_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column returned_items
+		dataType: int64
+		formatString: 0
+		lineageTag: 13d5dcb0-4466-4fa1-9093-416eb581f7e5
+		summarizeBy: sum
+		sourceColumn: returned_items
+
+		annotation SummarizationSetBy = Automatic
+
+	column return_rate
+		dataType: double
+		lineageTag: bcf912bf-a179-4f97-83f6-299877f028ca
+		summarizeBy: sum
+		sourceColumn: return_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column refund_amount
+		dataType: double
+		lineageTag: 71414e83-f9b7-4fa2-829c-0286aafdada5
+		summarizeBy: sum
+		sourceColumn: refund_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column review_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 779d035b-be43-4c41-9892-81b1d620401e
+		summarizeBy: sum
+		sourceColumn: review_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column average_rating
+		dataType: double
+		lineageTag: 5102229a-5c81-4375-a47f-b4434a21d97b
+		summarizeBy: sum
+		sourceColumn: average_rating
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column recency
+		dataType: int64
+		formatString: 0
+		lineageTag: 42b0c004-328e-4961-ae5b-68f5964421b8
+		summarizeBy: sum
+		sourceColumn: recency
+
+		annotation SummarizationSetBy = Automatic
+
+	column frequency
+		dataType: int64
+		formatString: 0
+		lineageTag: 68de9840-8464-4db1-9087-08142059db0e
+		summarizeBy: sum
+		sourceColumn: frequency
+
+		annotation SummarizationSetBy = Automatic
+
+	column monetary
+		dataType: int64
+		formatString: 0
+		lineageTag: 91f585c7-b158-4788-b5dd-368da42a3693
+		summarizeBy: sum
+		sourceColumn: monetary
+
+		annotation SummarizationSetBy = Automatic
+
+	column rfm_score
+		dataType: string
+		lineageTag: b412cd05-630b-4904-9a3e-cddca643d826
+		summarizeBy: none
+		sourceColumn: rfm_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column rfm_segment
+		dataType: string
+		lineageTag: 6bb17b59-ab92-4455-8121-ab50b0591453
+		summarizeBy: none
+		sourceColumn: rfm_segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 87c49b3c-7fb0-449b-b8a7-10dd64253fb6
+		summarizeBy: sum
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition mart_customer = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents("D:\retail_dw\marts\mart_customer.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,93 @@
+table fact_web_traffic
+	lineageTag: 4f4347ef-531f-4ec3-a807-8f318892bb8b
+
+	column date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8f910f76-4d5f-47b8-85db-350d322eb312
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column traffic_source_key
+		dataType: string
+		isHidden
+		lineageTag: 5e76a5da-e885-4fe9-99c8-f1b0946eb865
+		summarizeBy: none
+		sourceColumn: traffic_source_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column sessions
+		dataType: int64
+		formatString: 0
+		lineageTag: 053f16e2-3c00-4243-bf8d-18695015c4f0
+		summarizeBy: sum
+		sourceColumn: sessions
+
+		annotation SummarizationSetBy = Automatic
+
+	column unique_visitors
+		dataType: int64
+		formatString: 0
+		lineageTag: 4bdb8fac-8e31-4b1f-abec-e067cc0836c6
+		summarizeBy: sum
+		sourceColumn: unique_visitors
+
+		annotation SummarizationSetBy = Automatic
+
+	column page_views
+		dataType: int64
+		formatString: 0
+		lineageTag: addbef49-4b17-4810-b044-f82ee3d6887c
+		summarizeBy: sum
+		sourceColumn: page_views
+
+		annotation SummarizationSetBy = Automatic
+
+	column bounce_rate
+		dataType: double
+		lineageTag: 661e79f9-2760-418e-9ddd-44b747725a58
+		summarizeBy: sum
+		sourceColumn: bounce_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_session_duration_seconds
+		dataType: double
+		lineageTag: c4389f33-9253-4f7c-bdf9-e44c090c0ba7
+		summarizeBy: sum
+		sourceColumn: avg_session_duration_seconds
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column web_traffic_key
+		dataType: string
+		lineageTag: 0406fe29-fc36-4230-8a2d-8ad8a0d9b3eb
+		summarizeBy: none
+		sourceColumn: web_traffic_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_web_traffic = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents("D:\retail_dw\marts\fact_web_traffic.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

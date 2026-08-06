@@ -1,0 +1,118 @@
+relationship 91563000-45d5-4e7e-b32a-6da44531e8ff
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_customer.signup_date
+	toColumn: LocalDateTable_e40bf763-5a9f-4087-a340-2e64cd3127e3.Date
+
+relationship 1367fc04-fe53-4fb6-963c-15606ee51271
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_promotion.start_date
+	toColumn: LocalDateTable_a95541f8-2bb2-4fa0-a0a4-6c544bbd7268.Date
+
+relationship 59d824a8-6aef-4c7a-b8ae-43334ebcfa5d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_promotion.end_date
+	toColumn: LocalDateTable_75b83d34-fa4b-45e6-b8ff-e9e9c40b4042.Date
+
+relationship AutoDetected_5eb3147f-b570-4347-8c8e-4a1fcb91519c
+	isActive: false
+	fromColumn: fact_order.customer_key
+	toColumn: dim_customer.customer_key
+
+relationship AutoDetected_74475e91-aa95-46a4-9d96-16a24b32652d
+	fromColumn: fact_order.geography_key
+	toColumn: dim_geography.geography_key
+
+relationship AutoDetected_611e800c-8b09-4f89-8450-863891af6570
+	fromColumn: fact_return.customer_key
+	toColumn: dim_customer.customer_key
+
+relationship AutoDetected_ce1a020d-8cf5-4960-8f5b-32e7f22aec1d
+	fromColumn: fact_return.geography_key
+	toColumn: dim_geography.geography_key
+
+relationship AutoDetected_fb16dab2-0aad-4b54-a94a-fdaa9efd39ec
+	isActive: false
+	fromColumn: fact_return.order_id
+	toColumn: fact_order.order_id
+
+relationship AutoDetected_2b7b2d95-5b2b-4dc7-98a6-be993d0bff62
+	fromColumn: fact_sales.customer_key
+	toColumn: dim_customer.customer_key
+
+relationship AutoDetected_ac930ce0-37e4-4f24-aaa0-4b7eddbda8c9
+	fromColumn: fact_sales.date_key
+	toColumn: dim_date.date_key
+
+relationship AutoDetected_7156e4e7-e245-4c43-9194-9acbac05affa
+	fromColumn: fact_sales.geography_key
+	toColumn: dim_geography.geography_key
+
+relationship AutoDetected_c03d51bf-9e81-4800-847d-437d9feccf80
+	isActive: false
+	fromColumn: fact_sales.order_id
+	toColumn: fact_order.order_id
+
+relationship AutoDetected_94b23b1e-1eb5-4f45-9acb-b67a6ca04c30
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: fact_web_traffic.date_key
+	toColumn: dim_date.date_key
+
+relationship AutoDetected_a9043b7b-cca0-4cc1-9b4d-2ee2bfdb97b9
+	fromColumn: fact_web_traffic.traffic_source_key
+	toColumn: dim_traffic_source.traffic_source_key
+
+relationship AutoDetected_0e6729b5-70a9-4c59-b856-aacd0b9ca155
+	fromColumn: fact_inventory_snapshot.product_key
+	toColumn: dim_product.product_key
+
+relationship AutoDetected_0b795e70-e4dd-49c0-9be0-b8d2985566e0
+	fromColumn: fact_return.product_key
+	toColumn: dim_product.product_key
+
+relationship AutoDetected_79dc2d76-4611-4eaf-a551-fe73ce2816d9
+	fromColumn: fact_sales.product_key
+	toColumn: dim_product.product_key
+
+relationship 2f98a4fb-d8e3-45c8-9b03-837b4cf9f88f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mart_customer.signup_date
+	toColumn: LocalDateTable_e8ba3215-f356-4055-babf-6318c292da7a.Date
+
+relationship 0e4b2ed5-9a00-4032-b774-b0e644453e00
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mart_customer.first_order_date
+	toColumn: LocalDateTable_1e6ae2ee-c362-4a98-be41-3538d7174985.Date
+
+relationship 64f5bf55-087f-4d4c-92b6-9a954a83990e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mart_customer.last_order_date
+	toColumn: LocalDateTable_db6728a9-b770-45cd-8ce5-495b8aae31bd.Date
+
+relationship AutoDetected_c2e050e2-bc4c-4d9e-a720-4ae9aa9687ec
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: mart_customer.customer_id
+	toColumn: dim_customer.customer_id
+
+relationship AutoDetected_627fe1e7-b908-494a-9fcc-e80977469ca3
+	isActive: false
+	fromColumn: fact_order.customer_key
+	toColumn: mart_customer.customer_key
+
+relationship AutoDetected_7644f35c-49eb-4731-ab8b-69a3c9f0839d
+	isActive: false
+	fromColumn: fact_return.customer_key
+	toColumn: mart_customer.customer_key
+
+relationship AutoDetected_a52c5b85-9bba-4e34-9729-d4c6e0ec9ef5
+	isActive: false
+	fromColumn: fact_sales.customer_key
+	toColumn: mart_customer.customer_key
+
+relationship 88ad2821-586d-35cc-3c1a-7c2226ed81dc
+	isActive: false
+	fromColumn: fact_order.order_date_key
+	toColumn: dim_date.date_key
+

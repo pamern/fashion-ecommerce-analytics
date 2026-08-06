@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "FashionAnalytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d68c26a0-33f0-4815-a57d-4c106400c260"
+  }
+}

@@ -1,0 +1,48 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup 'Transform File from marts'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from marts\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBI_QueryOrder = ["Sample File","Parameter1","Transform Sample File","Transform File","dim_customer","dim_geography","dim_date","dim_promotion","dim_traffic_source","fact_inventory_snapshot","fact_order","fact_return","fact_sales","fact_web_traffic","dim_product","mart_customer"]
+
+annotation __TEdtr = 1
+
+ref table dim_customer
+ref table DateTableTemplate_854655a7-8e02-4caf-b71f-7a90b1e69e86
+ref table LocalDateTable_e40bf763-5a9f-4087-a340-2e64cd3127e3
+ref table dim_geography
+ref table dim_date
+ref table dim_promotion
+ref table LocalDateTable_a95541f8-2bb2-4fa0-a0a4-6c544bbd7268
+ref table LocalDateTable_75b83d34-fa4b-45e6-b8ff-e9e9c40b4042
+ref table dim_traffic_source
+ref table fact_inventory_snapshot
+ref table fact_order
+ref table fact_return
+ref table fact_sales
+ref table fact_web_traffic
+ref table dim_product
+ref table _Measures
+ref table mart_customer
+ref table LocalDateTable_e8ba3215-f356-4055-babf-6318c292da7a
+ref table LocalDateTable_1e6ae2ee-c362-4a98-be41-3538d7174985
+ref table LocalDateTable_db6728a9-b770-45cd-8ce5-495b8aae31bd
+
+ref cultureInfo en-US
+

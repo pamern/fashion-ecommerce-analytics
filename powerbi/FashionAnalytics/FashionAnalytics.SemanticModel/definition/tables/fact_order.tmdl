@@ -1,0 +1,162 @@
+table fact_order
+	lineageTag: 772f9ad1-d5ee-4ae1-8564-ca4dadaab973
+
+	column order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0283d108-952c-4cf3-a8b9-f53a83c48b9b
+		summarizeBy: sum
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: fa9839f4-d73a-4239-9d2f-0e0d76224df2
+		summarizeBy: sum
+		sourceColumn: order_date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ship_date_key
+		dataType: double
+		isHidden
+		lineageTag: 2facac67-f8de-4c95-824b-9e6bf6ede622
+		summarizeBy: sum
+		sourceColumn: ship_date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column delivery_date_key
+		dataType: double
+		isHidden
+		lineageTag: e84c72c9-d81d-4cd3-aafe-bf67cde4e11b
+		summarizeBy: sum
+		sourceColumn: delivery_date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column customer_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d8c6920d-28c5-41f4-adf7-f82b994d8eb4
+		summarizeBy: sum
+		sourceColumn: customer_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column geography_key
+		dataType: int64
+		formatString: 0
+		lineageTag: a251c52a-fb47-4325-ada1-a2d0c0e9b544
+		summarizeBy: none
+		sourceColumn: geography_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: 684cf528-414d-4369-943e-eff3fedf765a
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column device_type
+		dataType: string
+		lineageTag: 99615179-d3e3-4466-82e7-50d1ba81c092
+		summarizeBy: none
+		sourceColumn: device_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_source
+		dataType: string
+		lineageTag: b707711d-02f8-4ae6-9410-b23d703f885f
+		summarizeBy: none
+		sourceColumn: order_source
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_method
+		dataType: string
+		lineageTag: ac8d6597-9fc2-4599-b66f-acb0666642e1
+		summarizeBy: none
+		sourceColumn: payment_method
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_value
+		dataType: double
+		lineageTag: fc8c63d7-feb7-48b1-ba41-a9931c0fca30
+		summarizeBy: sum
+		sourceColumn: payment_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column shipping_fee
+		dataType: double
+		lineageTag: 087da5b5-ae4f-41df-a924-54f95a9ac2a7
+		summarizeBy: sum
+		sourceColumn: shipping_fee
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column installments
+		dataType: int64
+		formatString: 0
+		lineageTag: ded5031d-c927-4a5f-a698-ad6802ae9611
+		summarizeBy: sum
+		sourceColumn: installments
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_days
+		dataType: double
+		lineageTag: 0fb34f4d-046b-46ba-b212-baba9e0d3b28
+		summarizeBy: sum
+		sourceColumn: delivery_days
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_key
+		dataType: string
+		lineageTag: d31fa709-37dc-4db3-85b1-c9ce7d660a20
+		summarizeBy: none
+		sourceColumn: order_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_order = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents("D:\retail_dw\marts\fact_order.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

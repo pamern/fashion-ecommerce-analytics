@@ -1,0 +1,94 @@
+table dim_product
+	lineageTag: 286ac7b4-707b-4942-af8c-6159400bf6c4
+
+	column product_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 47ba0cdb-7d51-4741-9dd4-456805a9b4b4
+		summarizeBy: none
+		sourceColumn: product_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 813ae7c7-3f24-4d79-b374-6e6e46783545
+		summarizeBy: sum
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: d40c8bd5-c560-454e-8e2a-25a4ec861282
+		summarizeBy: none
+		sourceColumn: product_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: 40100813-720a-4d15-8dc9-48013677c579
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column segment
+		dataType: string
+		lineageTag: 2b1c33b6-bf5f-4f97-86c1-9e575a1e8da5
+		summarizeBy: none
+		sourceColumn: segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column size
+		dataType: string
+		lineageTag: 66958c69-c714-49f0-b3b4-5d42361070a6
+		summarizeBy: none
+		sourceColumn: size
+
+		annotation SummarizationSetBy = Automatic
+
+	column color
+		dataType: string
+		lineageTag: 4c850b1e-1f3b-4eb6-9928-f6deaf5ce03b
+		summarizeBy: none
+		sourceColumn: color
+
+		annotation SummarizationSetBy = Automatic
+
+	column list_price
+		dataType: double
+		lineageTag: 5d666064-ec4e-449d-b8b4-311cd200d476
+		summarizeBy: sum
+		sourceColumn: list_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cogs
+		dataType: double
+		lineageTag: 47a452e8-7980-473f-bc35-a6b6bb18b8cf
+		summarizeBy: sum
+		sourceColumn: cogs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents("D:\retail_dw\marts\dim_product.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

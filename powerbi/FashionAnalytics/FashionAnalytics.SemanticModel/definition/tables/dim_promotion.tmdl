@@ -1,0 +1,126 @@
+table dim_promotion
+	lineageTag: 368fe44e-53a8-443c-b4b3-1c0b03d173c9
+
+	column promotion_key
+		dataType: string
+		isHidden
+		lineageTag: 50d7fff4-90fd-4621-a358-08a896ac30f9
+		summarizeBy: none
+		sourceColumn: promotion_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column promo_id
+		dataType: string
+		lineageTag: bdeae695-2b64-4e3b-bcf7-ae2a3d8a73a0
+		summarizeBy: none
+		sourceColumn: promo_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column promo_name
+		dataType: string
+		lineageTag: ec56fb09-6925-4789-85e0-d36bbcf6d9b1
+		summarizeBy: none
+		sourceColumn: promo_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column promo_type
+		dataType: string
+		lineageTag: 70cef10d-a41b-4909-a95e-e322de84369c
+		summarizeBy: none
+		sourceColumn: promo_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column discount_value
+		dataType: double
+		lineageTag: 9605cf79-464e-45c0-9ea5-929fc378d8ef
+		summarizeBy: sum
+		sourceColumn: discount_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column start_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: dfa45861-6901-4416-a655-2dcb770a5faf
+		summarizeBy: none
+		sourceColumn: start_date
+
+		variation Variation
+			isDefault
+			relationship: 1367fc04-fe53-4fb6-963c-15606ee51271
+			defaultHierarchy: LocalDateTable_a95541f8-2bb2-4fa0-a0a4-6c544bbd7268.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column end_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 90c481c9-1bae-460a-9ca2-60c62fefc2e3
+		summarizeBy: none
+		sourceColumn: end_date
+
+		variation Variation
+			isDefault
+			relationship: 59d824a8-6aef-4c7a-b8ae-43334ebcfa5d
+			defaultHierarchy: LocalDateTable_75b83d34-fa4b-45e6-b8ff-e9e9c40b4042.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column applicable_category
+		dataType: string
+		lineageTag: 912ba4bd-71bb-4363-8e2f-a08fc99fb130
+		summarizeBy: none
+		sourceColumn: applicable_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column promo_channel
+		dataType: string
+		lineageTag: c65feeaa-68c0-4ee1-bd0a-6b1ac11fb776
+		summarizeBy: none
+		sourceColumn: promo_channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_stackable
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 597a7db5-9751-4955-9dde-7163a0b50d73
+		summarizeBy: none
+		sourceColumn: is_stackable
+
+		annotation SummarizationSetBy = Automatic
+
+	column min_order_value
+		dataType: int64
+		formatString: 0
+		lineageTag: 2cfe21c6-54fd-43a2-945c-f0819d3f1ccb
+		summarizeBy: sum
+		sourceColumn: min_order_value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_promotion = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents("D:\retail_dw\marts\dim_promotion.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

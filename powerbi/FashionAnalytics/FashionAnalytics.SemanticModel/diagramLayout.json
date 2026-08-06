@@ -1,0 +1,191 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 414.23774512445681,
+        "y": 77.033683163159338
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 586.842420846102,
+            "y": 1154.0969503185072
+          },
+          "nodeIndex": "dim_customer",
+          "nodeLineageTag": "94cb84b8-0e97-45ce-8e12-941c4edeec75",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 530.03285262994393,
+            "y": 307.25085874349361
+          },
+          "nodeIndex": "dim_product",
+          "nodeLineageTag": "34c88df2-b0ed-45c0-96ae-e92fe2ce95e1",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 905.30819352973674
+          },
+          "nodeIndex": "dim_geography",
+          "nodeLineageTag": "bfd3744a-dff6-45bd-825f-7395ca7725ea",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 818.14968748391948,
+            "y": 477.29683466106849
+          },
+          "nodeIndex": "dim_date",
+          "nodeLineageTag": "4dd3132b-3c5c-46d4-acb4-324ded59eb84",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 1342.3973257860771,
+            "y": 617.31857905795175
+          },
+          "nodeIndex": "dim_promotion",
+          "nodeLineageTag": "368fe44e-53a8-443c-b4b3-1c0b03d173c9",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1108.3973257860773,
+            "y": 521.0166143689413
+          },
+          "nodeIndex": "dim_traffic_source",
+          "nodeLineageTag": "dc67d3a3-cc68-4ca0-b474-c05945e7bf69",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 459.10977121130406,
+            "y": -50
+          },
+          "nodeIndex": "fact_inventory_snapshot",
+          "nodeLineageTag": "0b2ab5ff-5e34-4692-97c8-bd21ddf55058",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 298.5597188680926,
+            "y": 1184.6371581159037
+          },
+          "nodeIndex": "fact_order",
+          "nodeLineageTag": "772f9ad1-d5ee-4ae1-8564-ca4dadaab973",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 339.53891989753629,
+            "y": 805.22879466002576
+          },
+          "nodeIndex": "fact_return",
+          "nodeLineageTag": "e589ebb3-88f9-4ae8-a4f3-b5d71a03ceb7",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 652.9988827707964,
+            "y": 801.25254952371949
+          },
+          "nodeIndex": "fact_sales",
+          "nodeLineageTag": "7e1ef123-91f2-420b-ae10-5086909b81f2",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 819.04700741858358,
+            "y": 175.18139169672213
+          },
+          "nodeIndex": "fact_web_traffic",
+          "nodeLineageTag": "4f4347ef-531f-4ec3-a807-8f318892bb8b",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 1626.3973257860771,
+            "y": 617.31857905795175
+          },
+          "nodeIndex": "_Measures",
+          "nodeLineageTag": "db561696-8ae9-46c8-9214-d6cd3248623d",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 1971.0118703202361,
+            "y": 620.3912052950119
+          },
+          "nodeIndex": "mart_customer",
+          "nodeLineageTag": "b468dadf-9539-4b01-9703-40c0de875044",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 1
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 45.867379840751823,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

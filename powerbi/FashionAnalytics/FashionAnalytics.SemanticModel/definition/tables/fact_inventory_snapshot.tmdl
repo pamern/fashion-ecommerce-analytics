@@ -1,0 +1,137 @@
+table fact_inventory_snapshot
+	lineageTag: 0b2ab5ff-5e34-4692-97c8-bd21ddf55058
+
+	column snapshot_date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 64f390ce-796d-4953-8a14-901715e21eec
+		summarizeBy: sum
+		sourceColumn: snapshot_date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b484d09-febd-4166-8651-b5380076bd59
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column stock_on_hand
+		dataType: int64
+		formatString: 0
+		lineageTag: c0eb1c4d-8a0b-4bb1-b2aa-377aac50feff
+		summarizeBy: sum
+		sourceColumn: stock_on_hand
+
+		annotation SummarizationSetBy = Automatic
+
+	column units_received
+		dataType: int64
+		formatString: 0
+		lineageTag: 39b54637-b43d-44ee-afd0-0e0a0932706b
+		summarizeBy: sum
+		sourceColumn: units_received
+
+		annotation SummarizationSetBy = Automatic
+
+	column units_sold
+		dataType: int64
+		formatString: 0
+		lineageTag: 0bbc7666-8d94-41fd-8c37-b94a333f2608
+		summarizeBy: sum
+		sourceColumn: units_sold
+
+		annotation SummarizationSetBy = Automatic
+
+	column stockout_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 92bb3fce-297a-4ee0-b3aa-bedab2d2e00b
+		summarizeBy: sum
+		sourceColumn: stockout_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column days_of_supply
+		dataType: double
+		lineageTag: 0b7986fd-eb81-487b-9cf2-2ae13618c1df
+		summarizeBy: sum
+		sourceColumn: days_of_supply
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fill_rate
+		dataType: double
+		lineageTag: 1d2f53ab-bf82-4951-8aa5-78413d2d8550
+		summarizeBy: sum
+		sourceColumn: fill_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sell_through_rate
+		dataType: double
+		lineageTag: 85445d85-316d-4c0a-9704-4af3cfa2ab36
+		summarizeBy: sum
+		sourceColumn: sell_through_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column stockout_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 95932846-4170-41b5-943f-0b28c1af094e
+		summarizeBy: none
+		sourceColumn: stockout_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column overstock_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5d4a76f5-6849-4f4a-8234-c9c8315104fd
+		summarizeBy: none
+		sourceColumn: overstock_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column reorder_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 13c391ad-a81e-4d4f-9541-1eb4cf2bd5e9
+		summarizeBy: none
+		sourceColumn: reorder_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column inventory_snapshot_key
+		dataType: string
+		lineageTag: 02ce4a8b-18e9-4c74-9ec4-76a956e3df3a
+		summarizeBy: none
+		sourceColumn: inventory_snapshot_key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_inventory_snapshot = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents("D:\retail_dw\marts\fact_inventory_snapshot.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

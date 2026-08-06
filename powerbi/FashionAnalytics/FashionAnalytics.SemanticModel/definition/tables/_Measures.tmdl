@@ -1,0 +1,328 @@
+table _Measures
+	lineageTag: db561696-8ae9-46c8-9214-d6cd3248623d
+
+	measure 'Gross Sales' = SUM(fact_sales[gross_sales])
+		displayFolder: 01_Sales
+		lineageTag: 58758220-995c-45d6-85b3-6201e5bc90c2
+
+	measure 'Total Revenue' =
+			
+			SUM(fact_sales[net_sales])
+		displayFolder: 01_Sales
+		lineageTag: b8490c3b-f5d3-4992-9e9e-ae8591d4ad31
+
+		formatStringDefinition = ""
+
+	measure 'Gross Profit' =
+			
+			SUM(fact_sales[gross_profit])
+		displayFolder: 01_Sales
+		lineageTag: afb73098-c6f9-4ccd-b67b-1e44f62326ab
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Margin %' =
+			
+			DIVIDE(
+			    [Gross Profit],
+			    [Total Revenue]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01_Sales
+		lineageTag: bf0e69c6-afad-4c4b-a713-26682624a666
+
+	measure 'Total Orders' =
+			
+			CALCULATE(
+			    COUNTROWS(fact_order),
+			    USERELATIONSHIP(dim_date[date_key], fact_order[order_date_key])
+			)
+		displayFolder: 01_Sales
+		lineageTag: eb97cf57-bb55-4c36-82d4-68060f238e78
+
+	measure 'Active Customers' =
+			
+			DISTINCTCOUNT(fact_sales[customer_key])
+		formatString: 0
+		displayFolder: 02_Customer
+		lineageTag: 3f8f9f18-84b9-4fe8-b25c-fdb8e084bbbd
+
+	measure 'Returned Orders' = DISTINCTCOUNT(fact_return[order_id])
+		formatString: 0
+		displayFolder: 05_Returns
+		lineageTag: 6a248c78-364a-462d-8d80-9c1a8b1e6dcc
+
+	measure 'Return Rate' = DIVIDE([Returned Orders], [Total Orders])
+		displayFolder: 05_Returns
+		lineageTag: f0763a1a-b2f9-46e7-bf7f-e2aa71fb9aac
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure AOV =
+			
+			DIVIDE(
+			    [Total Revenue],
+			    [Total Orders]
+			)
+		displayFolder: 01_Sales
+		lineageTag: ef079a80-f9b7-4aa7-a762-3cd24cb1d1f5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'New Customers' =
+			
+			VAR StartDate =
+			    MIN(dim_date[full_date])
+			VAR EndDate =
+			    MAX(dim_date[full_date])
+			RETURN
+			    CALCULATE(
+			        DISTINCTCOUNT(mart_customer[customer_id]),
+			        FILTER(
+			            ALL(mart_customer),
+			            mart_customer[first_order_date] >= StartDate
+			                && mart_customer[first_order_date] <= EndDate
+			        )
+			    )
+		formatString: 0
+		displayFolder: 02_Customer
+		lineageTag: 430bdc41-8887-4b62-9701-b75594e1f909
+
+	measure 'Returning Customers' =
+			
+			[Active Customers] - [New Customers]
+		formatString: 0
+		displayFolder: 02_Customer
+		lineageTag: e2a33b9f-5a13-4edc-acd8-e26eeb1075d9
+
+	measure 'Returning Customer Rate' =
+			
+			DIVIDE(
+			    [Returning Customers],
+			    [Active Customers]
+			)
+		displayFolder: 02_Customer
+		lineageTag: f486c713-f7de-470a-8828-25bb77b6757f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Revenue LY' =
+			
+			CALCULATE(
+			    [Total Revenue],
+			    SAMEPERIODLASTYEAR(dim_date[full_date])
+			)
+		displayFolder: 01_Sales
+		lineageTag: 61390cdc-6583-462d-b3e4-2f5f706a9632
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Revenue Growth %' =
+			
+			DIVIDE(
+			    [Total Revenue] - [Revenue LY],
+			    [Revenue LY]
+			)
+		displayFolder: 01_Sales
+		lineageTag: 5f442dc2-c903-4973-ab77-f322bf8408de
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Revenue Growth Display' =
+			
+			VAR Growth = [Revenue Growth %]
+			RETURN
+			IF(
+			    Growth >= 0,
+			    "▲ +" & FORMAT(Growth, "0.0%") & " vs LY",
+			    "▼ -" & FORMAT(ABS(Growth), "0.0%") & " vs LY"
+			)
+		displayFolder: _Text
+		lineageTag: 5fe30fb8-f880-4e8e-8ccf-543797a4db68
+
+	measure 'Revenue Growth' =
+			
+			[Total Revenue] - [Revenue LY]
+		displayFolder: 01_Sales
+		lineageTag: 648b3d75-93ed-4278-9925-9df037ad4738
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Latest Year' =
+			
+			CALCULATE(
+			    MAX(dim_date[year]),
+			    REMOVEFILTERS(dim_date)
+			)
+		formatString: 0
+		displayFolder: _Text
+		lineageTag: 5579bf93-a8d2-454a-adf6-a45202bd5423
+
+	measure 'Revenue Latest Year' =
+			
+			VAR LatestYear = [Latest Year]
+			RETURN
+			CALCULATE(
+			    [Total Revenue],
+			    dim_date[year] = LatestYear
+			)
+		formatString: 0
+		displayFolder: 01_Sales
+		lineageTag: 3aaef0ac-dbc3-4dc5-aa39-9f21b650a5f8
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Latest Year Label' =
+			
+			FORMAT([Latest Year], "0") & "  -"
+		displayFolder: _Text
+		lineageTag: 8d537a3d-cf1e-4fbe-ae91-5d1f8406870a
+
+	measure 'Gross Profit LY' =
+			
+			CALCULATE(
+			    [Gross Profit],
+			    SAMEPERIODLASTYEAR(dim_date[full_date])
+			)
+		displayFolder: 01_Sales
+		lineageTag: 00281e90-56da-4081-84e4-a3e1d076647d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Profit Growth %' =
+			
+			DIVIDE ([Gross Profit]-[Gross Profit LY], [Gross Profit LY])
+		displayFolder: 01_Sales
+		lineageTag: f1594d09-92e4-40b5-a13f-560602015fe3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Profit Growth Display' =
+			
+			VAR Growth = [Gross Profit Growth %]
+			RETURN
+			IF(
+			    Growth >= 0,
+			    "▲ +" & FORMAT(Growth, "0.0%") & " vs LY",
+			    "▼ -" & FORMAT(ABS(Growth), "0.0%") & " vs LY"
+			)
+		displayFolder: _Text
+		lineageTag: 681b3452-e0d2-4d9e-bf2f-38744946025d
+
+	measure 'Gross Margin LY' = CALCULATE([Gross Margin %], SAMEPERIODLASTYEAR(dim_date[full_date]))
+		displayFolder: 01_Sales
+		lineageTag: 5fcdb956-2c66-402a-8935-0ec034fd4cb5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Margin Change' = [Gross Margin %] - [Gross Margin LY]
+		displayFolder: 01_Sales
+		lineageTag: 0cc56a6e-5840-4d43-8563-d897fdffba2b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Margin Change Display' =
+			
+			Var Growth = [Gross Margin Change]
+			RETURN
+			IF(
+			    Growth >= 0,
+			    "▲ +" & FORMAT(Growth, "0.0%") & " vs LY",
+			    "▼ -" & FORMAT(ABS(Growth), "0.0%") & " vs LY"
+			)
+		displayFolder: _Text
+		lineageTag: 3fbe1114-ebfc-44ff-a053-629b66dd90b0
+
+	measure 'Total Orders LY' = CALCULATE([Total Orders], SAMEPERIODLASTYEAR(dim_date[full_date]))
+		formatString: 0
+		displayFolder: 01_Sales
+		lineageTag: 7601761e-9c79-4a8c-b056-cbfdd4da76da
+
+	measure 'Total Orders Growth %' = DIVIDE([Total Orders]-[Total Orders LY], [Total Orders LY])
+		displayFolder: 01_Sales
+		lineageTag: ff01ac56-cba8-4e19-a4fc-4d2b1b0a5693
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Order Growth Display' =
+			
+			VAR Growth = [Total Orders Growth %]
+			RETURN
+			IF(
+			    Growth > 0,
+			    "▲ +" & FORMAT(Growth, "0.0%") & " vs LY",
+			    "▼ -" & FORMAT(ABS(Growth), "0.0%") & " vs LY"
+			)
+		displayFolder: _Text
+		lineageTag: 86ef8561-a9cd-438a-91f8-a5662847fc98
+
+	measure Measure
+		displayFolder: 01_Sales
+		lineageTag: fcb65835-166a-44f7-b718-2734bcf465ba
+
+		annotation 43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c = True
+
+	measure 'AOV LY' = CALCULATE([AOV], SAMEPERIODLASTYEAR(dim_date[full_date]))
+		displayFolder: 01_Sales
+		lineageTag: 8ca6c579-8d8d-4619-b597-1e3fa87bb749
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'AOV Growth %' = DIVIDE([AOV] - [AOV LY], [AOV LY])
+		displayFolder: 01_Sales
+		lineageTag: 8fc509ff-25c4-49c3-991d-c1da835294c6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'AOV Growth Display' =
+			VAR Growth = [AOV Growth %]
+			RETURN
+			IF(
+			    Growth >= 0,
+			    "▲ +" & FORMAT(Growth, "0.0%") & " vs LY",
+			    "▼ -" & FORMAT(ABS(Growth), "0.0%") & " vs LY"
+			)
+		displayFolder: _Text
+		lineageTag: f0d3122c-44d6-4e2d-99f5-6c9c90ab62b0
+
+	measure 'Active Customers LY' = CALCULATE([Active Customers], SAMEPERIODLASTYEAR(dim_date[full_date]))
+		formatString: 0
+		displayFolder: 02_Customer
+		lineageTag: 7fbdb570-f50d-415b-8a5d-85d4903246a6
+
+	measure 'Active Customers Growth %' = DIVIDE([Active Customers] - [Active Customers LY], [Active Customers LY])
+		displayFolder: 02_Customer
+		lineageTag: 5b5bc7aa-61e2-4320-80aa-d5d4f028d8ce
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Active Customers Growth Display' =
+			
+			VAR Growth = [Active Customers Growth %]
+			RETURN
+			IF(
+			    Growth >= 0,
+			    "▲ +" & FORMAT(Growth, "0.0%") & " vs LY",
+			    "▼ -" & FORMAT(ABS(Growth), "0.0%") & " vs LY"
+			)
+		displayFolder: _Text
+		lineageTag: 24c7d4f7-e014-4011-9ffa-f864ad8f2e1d
+
+	column Value
+		isHidden
+		formatString: 0
+		lineageTag: 2d508483-03c6-445c-bc8e-2f2cbe8add8a
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source =
+				
+				{ BLANK() }
+
+	annotation PBI_Id = 0d58e7cbe5034229a6ef5ed7b9699f94
+

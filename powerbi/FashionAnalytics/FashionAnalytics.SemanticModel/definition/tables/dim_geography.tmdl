@@ -1,0 +1,60 @@
+table dim_geography
+	lineageTag: bfd3744a-dff6-45bd-825f-7395ca7725ea
+
+	column geography_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5685820d-6ef2-47c3-99d5-50f5857e5037
+		summarizeBy: none
+		sourceColumn: geography_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column zip
+		dataType: int64
+		formatString: 0
+		lineageTag: 14ad1a01-cf54-4ce7-b5a5-e207d0d11884
+		summarizeBy: sum
+		sourceColumn: zip
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 69f1f036-0da6-43fa-9e77-ab1e2124cab7
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column district
+		dataType: string
+		lineageTag: 702d4d82-ef2c-44c3-a8df-057a97274094
+		summarizeBy: none
+		sourceColumn: district
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: fe2ac4dd-8c5b-4c9b-92da-d8b83019e783
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_geography = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents("D:\retail_dw\marts\dim_geography.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
