@@ -14,3 +14,7 @@ target/
 dbt_packages/
 logs/
 
+**/localSettings.json
+**/cache.abf
+**/unappliedChanges.json
+**/.pbi/
