@@ -1,4 +1,11 @@
 select
+    md5(
+        concat_ws(
+            '|',
+            snapshot_date::text,
+            product_id::text
+        )
+    ) as inventory_snapshot_key,
     to_char(snapshot_date, 'YYYYMMDD')::integer as snapshot_date_key,
     product_id as product_key,
     stock_on_hand,

@@ -5,6 +5,7 @@ models:
     description: Calendar dimension spanning every date present in source data.
     columns:
       - name: date_key
+        description: Primary key of the date dimension.
         data_tests:
           - not_null
           - unique
@@ -24,6 +25,10 @@ models:
               arguments:
                 min_value: 1
                 max_value: 12
+      - name: month_year
+        description: Calendar month in YYYY-MM format.
+        data_tests:
+          - not_null
       - name: quarter
         data_tests:
           - accepted_range:
@@ -54,6 +59,7 @@ models:
     description: Current product attributes used to analyze sales and inventory.
     columns:
       - name: product_key
+        description: Primary key of the product dimension.
         data_tests:
           - not_null
           - unique
@@ -89,6 +95,7 @@ models:
     description: Current customer demographic and acquisition attributes.
     columns:
       - name: customer_key
+        description: Primary key of the customer dimension.
         data_tests:
           - not_null
           - unique
@@ -113,6 +120,7 @@ models:
     description: Postal-code geography dimension.
     columns:
       - name: geography_key
+        description: Primary key of the geography dimension.
         data_tests:
           - not_null
           - unique
@@ -134,6 +142,7 @@ models:
     description: Promotion definitions keyed by a deterministic hash.
     columns:
       - name: promotion_key
+        description: Primary key of the promotion dimension.
         data_tests:
           - not_null
           - unique
@@ -175,6 +184,7 @@ models:
     description: Distinct web acquisition channels.
     columns:
       - name: traffic_source_key
+        description: Primary key of the traffic-source dimension.
         data_tests:
           - not_null
           - unique

@@ -6,6 +6,7 @@ select
             product_id::text
         )
     ) as sales_key,
+    md5(order_id::text) as order_key,
     order_id,
     to_char(order_date, 'YYYYMMDD')::integer as date_key,
     product_id as product_key,

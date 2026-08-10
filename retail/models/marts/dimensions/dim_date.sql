@@ -70,6 +70,7 @@ select
     full_date,
     extract(day from full_date)::integer as day,
     extract(month from full_date)::integer as month,
+    to_char(full_date, 'YYYY-MM') as month_year,
     extract(quarter from full_date)::integer as quarter,
     extract(year from full_date)::integer as year,
     trim(to_char(full_date, 'Day')) as day_of_week,
