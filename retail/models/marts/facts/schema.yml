@@ -6,12 +6,20 @@ models:
       Delivered sales at one row per order and product.
     columns:
       - name: sales_key
+        description: Primary key of the completed order-product sales line.
         data_tests:
           - not_null
           - unique
       - name: order_id
         data_tests:
           - not_null
+      - name: order_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_order')
+                field: order_key
       - name: date_key
         data_tests:
           - not_null
@@ -71,6 +79,11 @@ models:
   - name: fact_order
     description: One row per order with payment and fulfillment measures.
     columns:
+      - name: order_key
+        description: Primary key of the order fact.
+        data_tests:
+          - not_null
+          - unique
       - name: order_id
         data_tests:
           - not_null
@@ -143,10 +156,22 @@ models:
   - name: fact_return
     description: One row per returned product event.
     columns:
+      - name: return_key
+        description: Primary key of the return fact.
+        data_tests:
+          - not_null
+          - unique
       - name: return_id
         data_tests:
           - not_null
           - unique
+      - name: order_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_order')
+                field: order_key
       - name: order_id
         data_tests:
           - not_null
@@ -193,6 +218,11 @@ models:
   - name: fact_inventory_snapshot
     description: Month-end product inventory snapshots.
     columns:
+      - name: inventory_snapshot_key
+        description: Primary key of the product-date inventory snapshot.
+        data_tests:
+          - not_null
+          - unique
       - name: snapshot_date_key
         data_tests:
           - not_null
@@ -254,6 +284,11 @@ models:
   - name: fact_web_traffic
     description: Daily web traffic by acquisition source.
     columns:
+      - name: web_traffic_key
+        description: Primary key of the date-source traffic fact.
+        data_tests:
+          - not_null
+          - unique
       - name: date_key
         data_tests:
           - not_null

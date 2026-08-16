@@ -1,4 +1,6 @@
 select
+    md5(returns.return_id) as return_key,
+    md5(returns.order_id::text) as order_key,
     returns.return_id,
     returns.order_id,
     to_char(returns.return_date, 'YYYYMMDD')::integer

@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: bridge_sales_promotion
+    description: >
+      Promotions applied to completed sales lines. One row represents one
+      distinct promotion on an order-product sales line.
+    columns:
+      - name: sales_promotion_key
+        description: Primary key of the sales-promotion association.
+        data_tests:
+          - not_null
+          - unique
+      - name: sales_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_sales')
+                field: sales_key
+      - name: promotion_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_promotion')
+                field: promotion_key
+      - name: promotion_sequence
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2]
