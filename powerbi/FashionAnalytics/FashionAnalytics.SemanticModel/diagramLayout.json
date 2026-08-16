@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 414.23774512445681,
-        "y": 77.033683163159338
+        "x": 0,
+        "y": 0
       },
       "nodes": [
         {
@@ -58,12 +58,12 @@
             "height": 272,
             "width": 234
           },
-          "zIndex": 12
+          "zIndex": 11
         },
         {
           "location": {
-            "x": 1342.3973257860771,
-            "y": 617.31857905795175
+            "x": 1479.7498412747127,
+            "y": 227.06301917754251
           },
           "nodeIndex": "dim_promotion",
           "nodeLineageTag": "368fe44e-53a8-443c-b4b3-1c0b03d173c9",
@@ -71,7 +71,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 5
+          "zIndex": 13
         },
         {
           "location": {
@@ -84,7 +84,7 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 6
+          "zIndex": 5
         },
         {
           "location": {
@@ -97,7 +97,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 7
+          "zIndex": 6
         },
         {
           "location": {
@@ -110,7 +110,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 8
+          "zIndex": 7
         },
         {
           "location": {
@@ -123,7 +123,7 @@
             "height": 296,
             "width": 234
           },
-          "zIndex": 9
+          "zIndex": 8
         },
         {
           "location": {
@@ -136,7 +136,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 13
+          "zIndex": 12
         },
         {
           "location": {
@@ -149,7 +149,7 @@
             "height": 248,
             "width": 234
           },
-          "zIndex": 10
+          "zIndex": 9
         },
         {
           "location": {
@@ -162,7 +162,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 11
+          "zIndex": 10
         },
         {
           "location": {

@@ -123,10 +123,9 @@ table _Measures
 			    [Total Revenue] - [Revenue LY],
 			    [Revenue LY]
 			)
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: 01_Sales
 		lineageTag: 5f442dc2-c903-4973-ab77-f322bf8408de
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Revenue Growth Display' =
 			
@@ -256,12 +255,6 @@ table _Measures
 		displayFolder: _Text
 		lineageTag: 86ef8561-a9cd-438a-91f8-a5662847fc98
 
-	measure Measure
-		displayFolder: 01_Sales
-		lineageTag: fcb65835-166a-44f7-b718-2734bcf465ba
-
-		annotation 43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c = True
-
 	measure 'AOV LY' = CALCULATE([AOV], SAMEPERIODLASTYEAR(dim_date[full_date]))
 		displayFolder: 01_Sales
 		lineageTag: 8ca6c579-8d8d-4619-b597-1e3fa87bb749
@@ -269,10 +262,9 @@ table _Measures
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'AOV Growth %' = DIVIDE([AOV] - [AOV LY], [AOV LY])
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: 01_Sales
 		lineageTag: 8fc509ff-25c4-49c3-991d-c1da835294c6
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'AOV Growth Display' =
 			VAR Growth = [AOV Growth %]
@@ -307,6 +299,33 @@ table _Measures
 			)
 		displayFolder: _Text
 		lineageTag: 24c7d4f7-e014-4011-9ffa-f864ad8f2e1d
+
+	measure 'Revenue with Growth' = ```
+			
+			VAR _Revenue = [Total Revenue]
+			VAR _Growth = [Revenue Growth %]
+			RETURN
+			    IF(_Revenue >= 1000000000, FORMAT(_Revenue/1000000000, "0.0") & "bn", 
+			        IF(_Revenue >= 1000000, FORMAT(_Revenue/1000000, "0.0") & "M", 
+			            FORMAT(_Revenue, "0")
+			        )
+			    ) & " (" & 
+			    IF(_Growth > 0, "▲ +", IF(_Growth < 0, "▼ ", "")) & 
+			    FORMAT(ABS(_Growth), "0.0%") & ")"
+			```
+		displayFolder: _Text
+		lineageTag: 6234f57c-2bb7-45c2-b970-9660534fb588
+
+	measure 'Revenue Contribution %' = ```
+			
+			DIVIDE(
+			    [Total Revenue], 
+			    CALCULATE([Total Revenue], ALLSELECTED('dim_product'[category]))
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01_Sales
+		lineageTag: 804b8e1c-1b6c-4d32-b76f-8cfc7cd27637
 
 	column Value
 		isHidden

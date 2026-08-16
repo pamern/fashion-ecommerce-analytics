@@ -79,25 +79,28 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
-	column month_name = FORMAT(dim_date[full_date], "MMM")
-		lineageTag: 24277243-8693-4f30-90cb-5a8e90944aee
+	column month_year
+		dataType: string
+		lineageTag: 31fca5b4-7826-47e9-a83c-8f247f3b218a
 		summarizeBy: none
-		sortByColumn: month
-
-		changedProperty = SortByColumn
+		sourceColumn: month_year
 
 		annotation SummarizationSetBy = Automatic
 
 	hierarchy 'year Hierarchy'
-		lineageTag: 8241bd91-b1d7-4788-96a8-a5b6831c13c5
+		lineageTag: 643c97c0-5ff5-46ae-af50-1325cb417641
 
 		level year
-			lineageTag: 4dfa532b-64ac-47fd-8a2e-f9098c8d0436
+			lineageTag: 8a668e9e-0f3f-4399-ae1f-0d6ec6684bc4
 			column: year
 
-		level month_name
-			lineageTag: 851432e8-dfe2-45b5-8edd-f72b69187e57
-			column: month_name
+		level quarter
+			lineageTag: 54cb0e55-206d-4e3f-ab90-462fefa72099
+			column: quarter
+
+		level month
+			lineageTag: 762462e3-3740-46ad-a78e-d35af673afdf
+			column: month
 
 	partition dim_date = m
 		mode: import

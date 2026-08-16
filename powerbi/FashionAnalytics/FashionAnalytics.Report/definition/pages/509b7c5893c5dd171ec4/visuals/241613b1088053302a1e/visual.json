@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "241613b1088053302a1e",
   "position": {
-    "x": 1307.5,
-    "y": 257.5,
-    "z": 16000,
-    "height": 377.5,
-    "width": 600,
-    "tabOrder": 16000
+    "x": 10,
+    "y": 650,
+    "z": 15000,
+    "height": 415,
+    "width": 826.66666666666674,
+    "tabOrder": 15000
   },
   "visual": {
     "visualType": "columnChart",
@@ -255,37 +255,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "e5ba1698065203b65d06",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Measures"
-              }
-            },
-            "Property": "New Customers"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "c3d2c947db1b0c1b3b7d",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Measures"
-              }
-            },
-            "Property": "Returning Customers"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
