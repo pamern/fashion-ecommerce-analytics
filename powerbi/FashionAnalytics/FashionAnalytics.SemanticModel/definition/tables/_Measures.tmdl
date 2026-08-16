@@ -327,6 +327,23 @@ table _Measures
 		displayFolder: 01_Sales
 		lineageTag: 804b8e1c-1b6c-4d32-b76f-8cfc7cd27637
 
+	measure 'Cumulative %' =
+			
+			VAR CurrentUpper = SELECTEDVALUE('fact_sales'[net_sales_bins])
+			VAR TotalOrders = CALCULATE(COUNT('fact_sales'[net_sales]), ALLSELECTED('fact_sales'))
+			VAR CumOrders = CALCULATE(COUNT('fact_sales'[net_sales]), 'fact_sales'[net_sales] <= CurrentUpper, ALLSELECTED('fact_sales'))
+			RETURN DIVIDE(CumOrders, TotalOrders)
+		displayFolder: 01_Sales
+		lineageTag: 64cd11a8-ce3a-4828-a3de-ec8cb757f6c4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Threshold 80%' = 0.8
+		displayFolder: _Tools
+		lineageTag: 3436d789-7f61-445d-8733-4e4d663183c3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column Value
 		isHidden
 		formatString: 0

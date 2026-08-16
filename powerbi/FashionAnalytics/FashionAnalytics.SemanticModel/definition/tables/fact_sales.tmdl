@@ -115,6 +115,8 @@ table fact_sales
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"fact_sales","TableItemName":"net_sales_bins","ObjectType":4},"LinkType":"UsedInGroup"}]
+
 	column cogs_amount
 		dataType: double
 		lineageTag: ccba9614-f8a9-428f-97f0-ec4c6c456e9f
@@ -142,6 +144,48 @@ table fact_sales
 		sourceColumn: order_key
 
 		annotation SummarizationSetBy = Automatic
+
+	column net_sales_bins =
+			IF(
+				ISBLANK('fact_sales'[net_sales]),
+				BLANK(),
+				IF(
+					'fact_sales'[net_sales] >= 0,
+					ROUNDDOWN('fact_sales'[net_sales] / 20000, 0) * 20000,
+					ROUNDUP('fact_sales'[net_sales] / 20000, 0) * 20000
+				)
+			)
+		lineageTag: 4b528385-bc5a-427c-8dcb-9a472abf3ec2
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "fact_sales"
+				          }
+				        },
+				        "Property": "net_sales"
+				      }
+				    }
+				  ],
+				  "binningMetadata": {
+				    "binSize": {
+				      "value": 20000.0,
+				      "unit": 0
+				    }
+				  }
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"f","Entity":"fact_sales"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"f"}},"Property":"net_sales"}}],"BinItem":{"Expression":{"Floor":{"Expression":{"Column":{"Expression":{"SourceRef":{"Source":"f"}},"Property":"net_sales"}},"Size":20000.0}}}}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition fact_sales = m
 		mode: import
