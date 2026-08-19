@@ -18,3 +18,10 @@ sources:
       - name: web_traffic
       - name: geography
       - name: promotions
+
+  - name: ds
+    database: retail_dw
+    schema: ds
+
+    tables:
+      - name: customer_segment

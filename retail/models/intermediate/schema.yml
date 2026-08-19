@@ -224,3 +224,36 @@ models:
       - name: is_repeat_customer
         data_tests:
           - not_null
+
+  - name: int_customer_segement
+    description: Latest K-Means customer segment assignment from the data science schema.
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      - name: cluster_id
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [0, 1, 2]
+      - name: segment_name
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - Low-Value Customers
+                  - Mid-Value Customers
+                  - High-Value Customers
+      - name: model_version
+        data_tests:
+          - not_null
+      - name: scored_at
+        data_tests:
+          - not_null

@@ -319,7 +319,10 @@ select
         when rfm.recency <= 2 and rfm.frequency >= 3 then 'at_risk'
         when rfm.recency <= 2 and rfm.frequency <= 2 then 'hibernating'
         else 'needs_attention'
-    end as rfm_segment
+    end as rfm_segment,
+    customer_segments.segment_name
 from customer_metrics as metrics
 left join rfm_scored as rfm
     on metrics.customer_id = rfm.customer_id
+left join {{ ref('int_customer_segement') }} as customer_segments
+    on metrics.customer_id = customer_segments.customer_id

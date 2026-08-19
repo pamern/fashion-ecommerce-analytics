@@ -115,3 +115,11 @@ models:
                   - at_risk
                   - hibernating
                   - needs_attention
+      - name: segment_name
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - Low-Value Customers
+                  - Mid-Value Customers
+                  - High-Value Customers
