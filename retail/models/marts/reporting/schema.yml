@@ -3,10 +3,9 @@ version: 2
 models:
   - name: mart_customer
     description: >
-      Customer 360 reporting mart at one row per customer. Purchase and RFM
-      measures use fulfilled (delivered or returned) orders and the latest
-      source order date as the stable reporting date. Revenue is net of
-      discounts. Order velocity is only calculated for repeat customers.
+      Lean customer reporting mart at one row per customer. Purchase measures
+      use fulfilled (delivered or returned) orders and the latest source order
+      date as the stable reporting date. Revenue is net of discounts.
     columns:
       - name: customer_key
         description: Primary key of the customer reporting mart.
@@ -18,13 +17,11 @@ models:
                 to: ref('dim_customer')
                 field: customer_key
       - name: customer_id
-        data_tests:
-          - not_null
-          - unique
+        data_tests: [not_null, unique]
       - name: signup_date
         data_tests: [not_null]
-      - name: customer_lifetime_days
-        data_tests: [not_null, non_negative]
+      - name: days_since_last_purchase
+        data_tests: [non_negative]
       - name: customer_status
         data_tests:
           - not_null
@@ -33,89 +30,15 @@ models:
                 values: ['prospect', 'active', 'at_risk', 'churned']
       - name: total_orders
         data_tests: [not_null, non_negative]
-      - name: total_order_lines
-        data_tests: [not_null, non_negative]
       - name: total_quantity
         data_tests: [not_null, non_negative]
       - name: total_revenue
         data_tests: [not_null, non_negative]
-      - name: total_discount
-        data_tests: [not_null, non_negative]
-      - name: total_cogs
-        data_tests: [not_null, non_negative]
-      - name: total_profit
-        data_tests: [not_null]
       - name: average_order_value
         data_tests: [not_null, non_negative]
-      - name: average_profit_per_order
-        data_tests: [not_null]
       - name: is_repeat_customer
         data_tests: [not_null]
-      - name: gross_margin_rate
-        data_tests: [not_null]
-      - name: orders_per_30_days
-        data_tests: [non_negative]
-      - name: total_return_orders
-        data_tests: [not_null, non_negative]
-      - name: return_order_rate
-        data_tests:
-          - not_null
-          - accepted_range:
-              arguments:
-                min_value: 0
-                max_value: 1
-      - name: returned_items
-        data_tests: [not_null, non_negative]
-      - name: return_rate
-        data_tests: [not_null, non_negative]
-      - name: refund_amount
-        data_tests: [not_null, non_negative]
-      - name: review_count
-        data_tests: [not_null, non_negative]
-      - name: average_rating
-        data_tests:
-          - accepted_range:
-              arguments:
-                min_value: 1
-                max_value: 5
-      - name: recency
-        data_tests:
-          - not_null
-          - accepted_range:
-              arguments:
-                min_value: 0
-                max_value: 5
-      - name: frequency
-        data_tests:
-          - not_null
-          - accepted_range:
-              arguments:
-                min_value: 0
-                max_value: 5
-      - name: monetary
-        data_tests:
-          - not_null
-          - accepted_range:
-              arguments:
-                min_value: 0
-                max_value: 5
-      - name: rfm_score
-        data_tests: [not_null]
       - name: rfm_segment
-        data_tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values:
-                  - prospect
-                  - champions
-                  - loyal_customers
-                  - potential_loyalists
-                  - promising
-                  - at_risk
-                  - hibernating
-                  - needs_attention
-      - name: segment_name
         data_tests:
           - accepted_values:
               arguments:

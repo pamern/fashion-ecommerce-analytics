@@ -242,7 +242,7 @@ models:
           - accepted_values:
               arguments:
                 values: [0, 1, 2]
-      - name: segment_name
+      - name: rfm_segment
         data_tests:
           - not_null
           - accepted_values:
