@@ -1,8 +1,4 @@
-{{
-    config(
-        materialized='table'
-    )
-}}
+{{ config(materialized='table') }}
 
 WITH fulfilled_orders AS (
     SELECT
@@ -19,6 +15,14 @@ WITH fulfilled_orders AS (
         order_date::date
 ),
 
+customer_first_order AS (
+    SELECT
+        customer_id,
+        EXTRACT(YEAR FROM MIN(order_date))::int AS first_order_year
+    FROM fulfilled_orders
+    GROUP BY customer_id
+),
+
 data_bounds AS (
     SELECT
         MIN(order_date) AS min_order_date,
@@ -33,6 +37,7 @@ snapshot_bounds AS (
                 THEN EXTRACT(YEAR FROM min_order_date)::int + 1
             ELSE EXTRACT(YEAR FROM min_order_date)::int
         END AS first_snapshot_year,
+
         CASE
             WHEN max_order_date < MAKE_DATE(EXTRACT(YEAR FROM max_order_date)::int, 12, 31)
                 THEN EXTRACT(YEAR FROM max_order_date)::int - 1
@@ -124,9 +129,12 @@ current_scaled AS (
     SELECT
         c.customer_id,
         c.rfm_segment,
-        (c.recency - s.mean_recency) / NULLIF(s.std_recency, 0) AS recency_scaled,
-        (c.log_frequency - s.mean_log_frequency) / NULLIF(s.std_log_frequency, 0) AS frequency_scaled,
-        (c.log_monetary - s.mean_log_monetary) / NULLIF(s.std_log_monetary, 0) AS monetary_scaled
+        (c.recency - s.mean_recency)
+            / NULLIF(s.std_recency, 0) AS recency_scaled,
+        (c.log_frequency - s.mean_log_frequency)
+            / NULLIF(s.std_log_frequency, 0) AS frequency_scaled,
+        (c.log_monetary - s.mean_log_monetary)
+            / NULLIF(s.std_log_monetary, 0) AS monetary_scaled
     FROM current_rfm AS c
     CROSS JOIN scaler AS s
 ),
@@ -138,16 +146,18 @@ segment_centroids AS (
         AVG(frequency_scaled) AS centroid_frequency,
         AVG(monetary_scaled) AS centroid_monetary
     FROM current_scaled
-    GROUP BY
-        rfm_segment
+    GROUP BY rfm_segment
 ),
 
 yearly_scaled AS (
     SELECT
         r.*,
-        (r.recency - s.mean_recency) / NULLIF(s.std_recency, 0) AS recency_scaled,
-        (r.log_frequency - s.mean_log_frequency) / NULLIF(s.std_log_frequency, 0) AS frequency_scaled,
-        (r.log_monetary - s.mean_log_monetary) / NULLIF(s.std_log_monetary, 0) AS monetary_scaled
+        (r.recency - s.mean_recency)
+            / NULLIF(s.std_recency, 0) AS recency_scaled,
+        (r.log_frequency - s.mean_log_frequency)
+            / NULLIF(s.std_log_frequency, 0) AS frequency_scaled,
+        (r.log_monetary - s.mean_log_monetary)
+            / NULLIF(s.std_log_monetary, 0) AS monetary_scaled
     FROM rfm_features AS r
     CROSS JOIN scaler AS s
 ),
@@ -158,8 +168,8 @@ segment_distance AS (
         y.year,
         c.rfm_segment,
         POWER(y.recency_scaled - c.centroid_recency, 2)
-            + POWER(y.frequency_scaled - c.centroid_frequency, 2)
-            + POWER(y.monetary_scaled - c.centroid_monetary, 2) AS distance
+        + POWER(y.frequency_scaled - c.centroid_frequency, 2)
+        + POWER(y.monetary_scaled - c.centroid_monetary, 2) AS distance
     FROM yearly_scaled AS y
     CROSS JOIN segment_centroids AS c
 ),
@@ -206,12 +216,15 @@ annual_behavior AS (
         COUNT(DISTINCT order_id) AS orders_in_year,
         SUM(revenue) AS revenue_in_year,
         SUM(quantity) AS units_in_year,
-        SUM(revenue) / NULLIF(COUNT(DISTINCT order_id), 0) AS aov_in_year,
+        SUM(revenue)
+            / NULLIF(COUNT(DISTINCT order_id), 0) AS aov_in_year,
+
         PERCENTILE_CONT(0.5) WITHIN GROUP (
             ORDER BY days_between_purchases
         ) FILTER (
             WHERE days_between_purchases IS NOT NULL
         ) AS median_days_between_purchases
+
     FROM orders_with_gap
     GROUP BY
         customer_id,
@@ -222,26 +235,35 @@ combined AS (
     SELECT
         r.customer_id,
         r.year,
+        f.first_order_year,
         s.rfm_segment AS segment,
+
         CASE
             WHEN s.rfm_segment = 'Low-Value Customers' THEN 1
             WHEN s.rfm_segment = 'Mid-Value Customers' THEN 2
             WHEN s.rfm_segment = 'High-Value Customers' THEN 3
         END AS segment_rank,
+
         r.recency,
         r.frequency,
         r.monetary,
         r.average_order_value,
         r.units_purchased,
+
         COALESCE(b.orders_in_year, 0) AS orders_in_year,
         COALESCE(b.revenue_in_year, 0) AS revenue_in_year,
         COALESCE(b.units_in_year, 0) AS units_in_year,
         b.aov_in_year,
         b.median_days_between_purchases
+
     FROM rfm_features AS r
     INNER JOIN yearly_segment AS s
         ON r.customer_id = s.customer_id
         AND r.year = s.year
+
+    INNER JOIN customer_first_order AS f
+        ON r.customer_id = f.customer_id
+
     LEFT JOIN annual_behavior AS b
         ON r.customer_id = b.customer_id
         AND r.year = b.year
@@ -254,25 +276,30 @@ with_previous AS (
             PARTITION BY customer_id
             ORDER BY year
         ) AS previous_segment,
+
         LAG(segment_rank) OVER (
             PARTITION BY customer_id
             ORDER BY year
         ) AS previous_segment_rank,
+
         LAG(year) OVER (
             PARTITION BY customer_id
             ORDER BY year
         ) AS previous_year
+
     FROM combined
 )
 
 SELECT
     customer_id,
+    first_order_year,
     year,
     previous_year,
     previous_segment,
     segment,
     previous_segment_rank,
     segment_rank,
+
     CASE
         WHEN previous_year IS NULL THEN NULL
         WHEN year - previous_year <> 1 THEN NULL
@@ -280,6 +307,7 @@ SELECT
         WHEN segment_rank < previous_segment_rank THEN 'Downgrade'
         ELSE 'Stay'
     END AS movement,
+
     recency,
     frequency,
     monetary,
@@ -290,4 +318,5 @@ SELECT
     units_in_year,
     aov_in_year,
     median_days_between_purchases
+
 FROM with_previous
