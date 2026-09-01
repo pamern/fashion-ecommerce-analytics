@@ -35,7 +35,7 @@ def main() -> None:
             customer_id,
             days_since_last_purchase AS recency,
             total_orders AS frequency,
-            total_revenue AS monetary
+            total_sales AS monetary
         FROM marts.mart_customer
         WHERE total_orders > 0
           AND days_since_last_purchase IS NOT NULL

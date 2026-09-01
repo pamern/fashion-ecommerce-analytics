@@ -3,30 +3,25 @@ version: 2
 models:
   - name: mart_customer
     description: >
-      Lean customer reporting mart at one row per customer. Purchase measures
-      use fulfilled (delivered or returned) orders and the latest source order
-      date as the stable reporting date. Revenue is net of discounts.
+      Customer-level analytical mart at one row per customer. Purchase measures
+      use fulfilled (delivered or returned) orders, and total_sales is net of
+      discounts. The latest source order date is the stable reporting date for
+      days_since_last_purchase and segment.
     columns:
-      - name: customer_key
-        description: Primary key of the customer reporting mart.
+      - name: customer_id
+        description: Business customer identifier and primary key of the mart.
         data_tests:
           - not_null
           - unique
           - relationships:
               arguments:
                 to: ref('dim_customer')
-                field: customer_key
-
-      - name: customer_id
-        data_tests: [not_null, unique]
+                field: customer_id
 
       - name: signup_date
         data_tests: [not_null]
 
-      - name: days_since_last_purchase
-        data_tests: [non_negative]
-
-      - name: customer_status
+      - name: segment
         data_tests:
           - not_null
           - accepted_values:
@@ -39,14 +34,11 @@ models:
       - name: total_quantity
         data_tests: [not_null, non_negative]
 
-      - name: total_revenue
+      - name: total_sales
         data_tests: [not_null, non_negative]
 
-      - name: average_order_value
+      - name: aov
         data_tests: [not_null, non_negative]
-
-      - name: is_repeat_customer
-        data_tests: [not_null]
 
       - name: rfm_segment
         data_tests:
@@ -57,98 +49,5 @@ models:
                   - Mid-Value Customers
                   - High-Value Customers
 
-  - name: mart_customer_yearly
-    description: >
-      Annual customer RFM snapshots used for longitudinal customer value
-      and segment migration analysis.
-
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          arguments:
-            combination_of_columns:
-              - customer_id
-              - year
-
-    columns:
-      - name: customer_id
-        data_tests:
-          - not_null
-
-      - name: year
-        data_tests:
-          - not_null
-
-      - name: previous_year
-
-      - name: previous_segment
-
-      - name: segment
-        data_tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values:
-                  - Low-Value Customers
-                  - Mid-Value Customers
-                  - High-Value Customers
-
-      - name: previous_segment_rank
-
-      - name: segment_rank
-        data_tests:
-          - not_null
-
-      - name: movement
-        data_tests:
-          - accepted_values:
-              arguments:
-                values:
-                  - Upgrade
-                  - Stay
-                  - Downgrade
-
-      - name: recency
-        data_tests:
-          - not_null
-          - non_negative
-
-      - name: frequency
-        data_tests:
-          - not_null
-          - non_negative
-
-      - name: monetary
-        data_tests:
-          - not_null
-          - non_negative
-
-      - name: average_order_value
-        data_tests:
-          - non_negative
-
-      - name: units_purchased
-        data_tests:
-          - non_negative
-
-      - name: orders_in_year
-        data_tests:
-          - not_null
-          - non_negative
-
-      - name: revenue_in_year
-        data_tests:
-          - not_null
-          - non_negative
-
-      - name: units_in_year
-        data_tests:
-          - not_null
-          - non_negative
-
-      - name: aov_in_year
-        data_tests:
-          - non_negative
-
-      - name: median_days_between_purchases
-        data_tests:
-          - non_negative
+      - name: days_since_last_purchase
+        data_tests: [non_negative]

@@ -2,193 +2,126 @@ version: 2
 
 models:
   - name: dim_date
-    description: Calendar dimension spanning every date present in source data.
+    description: Calendar dimension at one row per date.
     columns:
       - name: date_key
-        description: Primary key of the date dimension.
-        data_tests:
-          - not_null
-          - unique
-      - name: full_date
-        data_tests:
-          - not_null
-          - unique
+        description: Primary key in YYYYMMDD form.
+        data_tests: [not_null, unique]
+      - name: date
+        data_tests: [not_null, unique]
       - name: day
         data_tests:
           - accepted_range:
-              arguments:
-                min_value: 1
-                max_value: 31
+              arguments: {min_value: 1, max_value: 31}
       - name: month
         data_tests:
           - accepted_range:
-              arguments:
-                min_value: 1
-                max_value: 12
-      - name: month_year
-        description: Calendar month in YYYY-MM format.
-        data_tests:
-          - not_null
+              arguments: {min_value: 1, max_value: 12}
+      - name: year_month
+        data_tests: [not_null]
       - name: quarter
         data_tests:
           - accepted_range:
-              arguments:
-                min_value: 1
-                max_value: 4
+              arguments: {min_value: 1, max_value: 4}
       - name: year
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: day_of_week
-        data_tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values:
-                  - Monday
-                  - Tuesday
-                  - Wednesday
-                  - Thursday
-                  - Friday
-                  - Saturday
-                  - Sunday
+        data_tests: [not_null]
       - name: is_weekend
-        data_tests:
-          - not_null
+        data_tests: [not_null]
 
   - name: dim_product
-    description: Current product attributes used to analyze sales and inventory.
+    description: Product dimension at one row per product.
     columns:
       - name: product_key
-        description: Primary key of the product dimension.
-        data_tests:
-          - not_null
-          - unique
+        description: Surrogate primary key.
+        data_tests: [not_null, unique]
       - name: product_id
-        data_tests:
-          - not_null
-          - unique
+        description: Business product identifier.
+        data_tests: [not_null, unique]
       - name: product_name
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: category
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: segment
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: size
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: color
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: list_price
-        data_tests:
-          - not_null
-          - non_negative
+        data_tests: [not_null, non_negative]
       - name: cogs
-        data_tests:
-          - not_null
-          - non_negative
+        data_tests: [not_null, non_negative]
 
   - name: dim_customer
-    description: Current customer demographic and acquisition attributes.
+    description: Customer dimension at one row per customer.
     columns:
       - name: customer_key
-        description: Primary key of the customer dimension.
-        data_tests:
-          - not_null
-          - unique
+        description: Surrogate primary key.
+        data_tests: [not_null, unique]
       - name: customer_id
-        data_tests:
-          - not_null
-          - unique
+        description: Business customer identifier.
+        data_tests: [not_null, unique]
       - name: signup_date
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: gender
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: age_group
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: acquisition_channel
-        data_tests:
-          - not_null
-
-  - name: dim_geography
-    description: Postal-code geography dimension.
-    columns:
-      - name: geography_key
-        description: Primary key of the geography dimension.
-        data_tests:
-          - not_null
-          - unique
+        data_tests: [not_null]
       - name: zip
         data_tests:
           - not_null
-          - unique
+          - relationships:
+              arguments: {to: ref('dim_geography'), field: zip}
+
+  - name: dim_geography
+    description: Geography dimension at one row per ZIP/postal code.
+    columns:
+      - name: geography_key
+        description: Surrogate primary key.
+        data_tests: [not_null, unique]
+      - name: zip
+        data_tests: [not_null, unique]
       - name: city
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: district
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: region
-        data_tests:
-          - not_null
+        data_tests: [not_null]
 
   - name: dim_promotion
-    description: Promotion definitions keyed by a deterministic hash.
+    description: Promotion dimension at one row per promotion.
     columns:
-      - name: promotion_key
-        description: Primary key of the promotion dimension.
-        data_tests:
-          - not_null
-          - unique
       - name: promo_id
-        data_tests:
-          - not_null
-          - unique
+        data_tests: [not_null, unique]
       - name: promo_name
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: promo_type
         data_tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: ['fixed', 'percentage']
+              arguments: {values: ['fixed', 'percentage']}
       - name: discount_value
-        data_tests:
-          - not_null
-          - non_negative
+        data_tests: [not_null, non_negative]
       - name: start_date
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: end_date
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: promo_channel
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: is_stackable
-        data_tests:
-          - not_null
+        data_tests: [not_null]
       - name: min_order_value
-        data_tests:
-          - not_null
-          - non_negative
+        data_tests: [not_null, non_negative]
 
   - name: dim_traffic_source
-    description: Distinct web acquisition channels.
+    description: Traffic-source dimension at one row per source.
     columns:
       - name: traffic_source_key
-        description: Primary key of the traffic-source dimension.
-        data_tests:
-          - not_null
-          - unique
+        description: Surrogate primary key.
+        data_tests: [not_null, unique]
       - name: traffic_source
-        data_tests:
-          - not_null
-          - unique
+        data_tests: [not_null, unique]

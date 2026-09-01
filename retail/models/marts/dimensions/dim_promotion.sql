@@ -1,5 +1,4 @@
 select
-    md5(promo_id) as promotion_key,
     promo_id,
     promo_name,
     promo_type,

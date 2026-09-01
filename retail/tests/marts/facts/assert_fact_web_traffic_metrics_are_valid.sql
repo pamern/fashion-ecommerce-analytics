@@ -1,5 +1,5 @@
 select
-    date_key,
+    traffic_date_key,
     traffic_source_key,
     sessions,
     unique_visitors,

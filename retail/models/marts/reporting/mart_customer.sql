@@ -1,3 +1,5 @@
+{{ config(materialized='table') }}
+
 with reference_date as (
     select max(order_date) as reference_date
     from {{ ref('stg_orders') }}
@@ -22,8 +24,8 @@ purchase_metrics as (
         max(order_date) as last_order_date,
         count(*) as total_orders,
         sum(quantity) as total_quantity,
-        sum(revenue) as total_revenue,
-        avg(revenue) as average_order_value
+        sum(revenue) as total_sales,
+        avg(revenue) as aov
     from order_totals
     group by customer_id
 ),
@@ -51,12 +53,11 @@ customer_metrics as (
             when reference_date.reference_date - purchases.last_order_date <= 90
                 then 'at_risk'
             else 'churned'
-        end as customer_status,
+        end as segment,
         coalesce(purchases.total_orders, 0) as total_orders,
         coalesce(purchases.total_quantity, 0) as total_quantity,
-        coalesce(purchases.total_revenue, 0) as total_revenue,
-        coalesce(purchases.average_order_value, 0) as average_order_value,
-        coalesce(purchases.total_orders, 0) >= 2 as is_repeat_customer
+        coalesce(purchases.total_sales, 0) as total_sales,
+        coalesce(purchases.aov, 0) as aov
     from {{ ref('stg_customers') }} as customers
     left join {{ ref('stg_geography') }} as geography
         on customers.zip = geography.zip
@@ -66,7 +67,6 @@ customer_metrics as (
 )
 
 select
-    metrics.customer_id as customer_key,
     metrics.customer_id,
     metrics.signup_date,
     metrics.gender,
@@ -77,14 +77,13 @@ select
     metrics.region,
     metrics.first_order_date,
     metrics.last_order_date,
-    metrics.days_since_last_purchase,
-    metrics.customer_status,
     metrics.total_orders,
     metrics.total_quantity,
-    metrics.total_revenue,
-    metrics.average_order_value,
-    metrics.is_repeat_customer,
-    customer_segments.rfm_segment
+    metrics.total_sales,
+    metrics.aov,
+    metrics.segment,
+    customer_segments.rfm_segment,
+    metrics.days_since_last_purchase
 from customer_metrics as metrics
 left join {{ ref('int_customer_segement') }} as customer_segments
     on metrics.customer_id = customer_segments.customer_id

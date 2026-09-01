@@ -1,7 +1,7 @@
 with date_range as (
     select
-        min(full_date) as min_date,
-        max(full_date) as max_date,
+        min(date) as min_date,
+        max(date) as max_date,
         count(*) as actual_day_count
     from {{ ref('dim_date') }}
 )

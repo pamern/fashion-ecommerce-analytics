@@ -37,21 +37,9 @@ fulfilled_promotions as (
 )
 
 select
-    md5(
-        concat_ws(
-            '|',
-            order_id::text,
-            product_id::text,
-            promo_id
-        )
-    ) as sales_promotion_key,
-    md5(
-        concat_ws(
-            '|',
-            order_id::text,
-            product_id::text
-        )
-    ) as sales_key,
-    md5(promo_id) as promotion_key,
-    promotion_sequence
-from fulfilled_promotions
+    sales.sales_key,
+    promotions.promo_id
+from fulfilled_promotions as promotions
+inner join {{ ref('fact_sales') }} as sales
+    on promotions.order_id = sales.order_id
+    and promotions.product_id = sales.product_id

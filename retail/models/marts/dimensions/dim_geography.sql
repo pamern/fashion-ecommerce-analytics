@@ -1,5 +1,5 @@
 select
-    zip as geography_key,
+    row_number() over (order by zip) as geography_key,
     zip,
     city,
     district,
